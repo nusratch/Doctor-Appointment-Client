@@ -13,7 +13,7 @@ const Navbar = () => {
       </li>
 
       <li>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/dashboard/my-bookings">Dashboard</Link>
       </li>
     </>
   );
@@ -22,10 +22,8 @@ const Navbar = () => {
 
     <div className="navbar bg-white shadow-md px-4 md:px-8">
 
-      {/* LEFT */}
       <div className="navbar-start">
 
-        {/* MOBILE MENU */}
         <div className="dropdown lg:hidden">
 
           <div
@@ -45,7 +43,6 @@ const Navbar = () => {
 
         </div>
 
-        {/* LOGO */}
         <Link
           to="/"
           className="text-2xl md:text-3xl font-bold text-blue-500"
@@ -55,7 +52,6 @@ const Navbar = () => {
 
       </div>
 
-      {/* CENTER MENU */}
       <div className="navbar-center hidden lg:flex">
 
         <ul className="menu menu-horizontal px-1 text-lg font-medium">
@@ -64,16 +60,21 @@ const Navbar = () => {
 
       </div>
 
-      {/* RIGHT SIDE */}
       <div className="navbar-end gap-2">
 
-        <button className="btn btn-sm md:btn-md btn-outline btn-primary">
+        <Link
+          to="/login"
+          className="btn btn-dash btn-info"
+        >
           Login
-        </button>
+        </Link>
 
-        <button className="btn btn-sm md:btn-md btn-primary">
+        <Link
+          to="/register"
+          className="btn btn-dash btn-info"
+        >
           Register
-        </button>
+        </Link>
 
       </div>
 
