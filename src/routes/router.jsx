@@ -6,6 +6,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home/Home";
 import AllAppointments from "../pages/AllAppointments/AllAppointments";
 import DoctorDetails from "../pages/DoctorDetails/DoctorDetails";
+
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
@@ -26,12 +27,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-
       {
         path: "/appointments",
         element: <AllAppointments />,
       },
-
       {
         path: "/doctor/:id",
         element: (
@@ -40,12 +39,10 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-
       {
         path: "/login",
         element: <Login />,
       },
-
       {
         path: "/register",
         element: <Register />,
@@ -65,7 +62,6 @@ const router = createBrowserRouter([
         path: "my-bookings",
         element: <MyBookings />,
       },
-
       {
         path: "my-profile",
         element: <MyProfile />,

@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer";
 const MainLayout = () => {
   return (
     <div className="min-h-screen bg-[#f4fbff] text-[#0f172a]">
+      
       <Navbar />
 
       <main className="min-h-[calc(100vh-160px)]">
@@ -12,6 +13,7 @@ const MainLayout = () => {
       </main>
 
       <Footer />
+
     </div>
   );
 };
