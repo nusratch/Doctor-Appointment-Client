@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -9,8 +9,8 @@ import DoctorDetails from "../pages/DoctorDetails/DoctorDetails";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
-import MyBookings from "../pages/Dashboard/MyBookings";
-import MyProfile from "../pages/Dashboard/MyProfile";
+import MyBookings from "../pages/Dashboard/MyBookings/MyBookings";
+import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
