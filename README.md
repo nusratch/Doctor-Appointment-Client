@@ -1,16 +1,87 @@
-# React + Vite
+DocAppoint – Doctor Appointment Booking System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🩺 DocAppoint – Doctor Appointment Booking System
 
-Currently, two official plugins are available:
+A modern full-stack MERN doctor appointment booking platform where users can explore doctors, view doctor details, and book appointments easily.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Live Website
 
-## React Compiler
+🌐 Frontend Live:
+https://doctor-appointment-client-n1e60gj1w-nusrats-projects-299df817.vercel.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🌐 Backend Live:
+https://doctor-appointment-server-b7yksvdc8-nusrats-projects-299df817.vercel.app
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+##  Features
+
+-  Google Authentication
+- Top Rated Doctors Section
+- Search Doctors by Name
+-  Doctor Details Page
+-  Appointment Booking System
+-  Delete Appointment
+-  Update Appointment
+-  Fully Responsive Design
+-  MongoDB Database Integration
+-  Modern UI with React + Tailwind CSS
+
+
+
+##  Technologies Used
+
+## Frontend
+- React
+- React Router DOM
+- Tailwind CSS
+- DaisyUI
+- Axios
+- React Toastify
+
+## Backend
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Better Auth
+- Google OAuth
+
+
+
+ ##  Frontend Setup
+
+cd doctor-appointment-client
+npm install
+npm run dev
+
+ ##  Backend Setup
+
+cd doctor-appointment-server
+npm install
+npm start
+
+
+
+
+## API Endpoints
+
+Doctors
+
+GET /doctors
+
+GET /doctors/:id
+
+
+Appointments
+
+POST /appointments
+
+GET /appointments
+
+PATCH /appointments/:id
+
+DELETE /appointments/:id
+
+
+

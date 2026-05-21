@@ -9,7 +9,9 @@ const BookAppointment = () => {
 
   useEffect(() => {
 
-   fetch("http://localhost:5000/doctors")
+    fetch(
+      "https://doctor-appointment-server-b7yksvdc8-nusrats-projects-299df817.vercel.app/doctors"
+    )
       .then((res) => res.json())
       .then((data) => {
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import {  Link, useParams } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 
 const DoctorDetails = () => {
 
@@ -10,7 +9,9 @@ const DoctorDetails = () => {
 
   useEffect(() => {
 
-fetch("http://localhost:5000/doctors")
+    fetch(
+      "https://doctor-appointment-server-b7yksvdc8-nusrats-projects-299df817.vercel.app/doctors"
+    )
       .then((res) => res.json())
       .then((data) => {
 
@@ -104,13 +105,14 @@ fetch("http://localhost:5000/doctors")
 
             </div>
 
-           <Link to={`/book-appointment/${doctor.id}`}>
+            <Link to={`/book-appointment/${doctor.id}`}>
 
-  <button className="btn mt-8 bg-[#3BA5F3] hover:bg-[#2593e8] border-none text-white w-full sm:w-fit px-10 rounded-xl">
-    Book Appointment
-  </button>
+              <button className="btn mt-8 bg-[#3BA5F3] hover:bg-[#2593e8] border-none text-white w-full sm:w-fit px-10 rounded-xl">
+                Book Appointment
+              </button>
 
-</Link>
+            </Link>
+
           </div>
 
         </div>
