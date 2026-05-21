@@ -4,6 +4,8 @@ import {
   useState,
 } from "react";
 
+import { authClient } from "../lib/auth-client";
+
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -14,15 +16,14 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
 
-    const storedUser = localStorage.getItem("docappoint-user");
+    authClient.getSession()
+      .then((data) => {
 
-    if (storedUser) {
+        setUser(data?.data?.user || null);
 
-      setUser(JSON.parse(storedUser));
+        setLoading(false);
 
-    }
-
-    setLoading(false);
+      });
 
   }, []);
 
@@ -30,20 +31,13 @@ const AuthProvider = ({ children }) => {
 
     setUser(userData);
 
-    localStorage.setItem(
-      "docappoint-user",
-      JSON.stringify(userData)
-    );
-
   };
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+
+    await authClient.signOut();
 
     setUser(null);
-
-    localStorage.removeItem("docappoint-user");
-
-    localStorage.removeItem("access-token");
 
   };
 

@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
+import {
+  useContext,
+} from "react";
+
+import {
+  AuthContext,
+} from "../../providers/AuthProvider";
 
 const Navbar = () => {
+
+  const {
+    user,
+    logoutUser,
+  } = useContext(AuthContext);
 
   const links = (
     <>
@@ -9,11 +21,15 @@ const Navbar = () => {
       </li>
 
       <li>
-        <Link to="/appointments">Appointments</Link>
+        <Link to="/appointments">
+          Appointments
+        </Link>
       </li>
 
       <li>
-        <Link to="/dashboard/my-bookings">Dashboard</Link>
+        <Link to="/dashboard/my-bookings">
+          Dashboard
+        </Link>
       </li>
     </>
   );
@@ -45,7 +61,7 @@ const Navbar = () => {
 
         <Link
           to="/"
-          className="text-2xl md:text-3xl font-bold text-blue-500"
+          className="text-2xl md:text-3xl font-bold text-sky-500"
         >
           DocAppoint
         </Link>
@@ -60,21 +76,46 @@ const Navbar = () => {
 
       </div>
 
-      <div className="navbar-end gap-2">
+      <div className="navbar-end gap-3">
 
-        <Link
-          to="/login"
-          className="btn btn-dash btn-info"
-        >
-          Login
-        </Link>
+        {
+          user ? (
+            <>
 
-        <Link
-          to="/register"
-          className="btn btn-dash btn-info"
-        >
-          Register
-        </Link>
+              <img
+                src={user.image || user.photoURL}
+                alt="User"
+                className="w-11 h-11 rounded-full object-cover border-2 border-sky-300"
+              />
+
+              <button
+                onClick={logoutUser}
+                className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+              >
+                Logout
+              </button>
+
+            </>
+          ) : (
+            <>
+
+              <Link
+                to="/login"
+                className="btn border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+              >
+                Register
+              </Link>
+
+            </>
+          )
+        }
 
       </div>
 

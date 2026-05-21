@@ -1,6 +1,35 @@
 import { Link } from "react-router-dom";
+import { authClient } from "../../lib/auth-client";
 
 const Login = () => {
+
+  const handleLogin = async (e) => {
+
+    e.preventDefault();
+
+    const form = e.target;
+
+    const email = form.email.value;
+
+    const password = form.password.value;
+
+    await authClient.signIn.email({
+
+      email,
+      password,
+
+    });
+
+  };
+
+  const handleGoogleLogin = async () => {
+
+    await authClient.signIn.social({
+      provider: "google",
+    });
+
+  };
+
   return (
 
     <div className="min-h-screen flex items-center justify-center bg-[#eef9ff] px-4 py-10">
@@ -11,7 +40,10 @@ const Login = () => {
           Login
         </h2>
 
-        <form className="space-y-5">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-5"
+        >
 
           <div>
 
@@ -21,6 +53,7 @@ const Login = () => {
 
             <input
               type="email"
+              name="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
             />
@@ -35,6 +68,7 @@ const Login = () => {
 
             <input
               type="password"
+              name="password"
               placeholder="Enter your password"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
             />
@@ -59,7 +93,10 @@ const Login = () => {
           OR
         </div>
 
-        <button className="btn btn-outline w-full border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl">
+        <button
+          onClick={handleGoogleLogin}
+          className="btn btn-outline w-full border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl"
+        >
           Continue with Google
         </button>
 
