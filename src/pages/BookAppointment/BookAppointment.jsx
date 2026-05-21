@@ -9,7 +9,7 @@ const BookAppointment = () => {
 
   useEffect(() => {
 
-    fetch("/doctors.json")
+   fetch("http://localhost:5000/doctors")
       .then((res) => res.json())
       .then((data) => {
 

@@ -4,6 +4,8 @@ import {
   useState,
 } from "react";
 
+import Modal from "react-modal";
+
 import axiosPublic from "../../../services/axiosPublic";
 
 import {
@@ -22,6 +24,12 @@ const MyBookings = () => {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [isOpen, setIsOpen] =
+    useState(false);
+
+  const [selectedBooking, setSelectedBooking] =
+    useState(null);
 
   useEffect(() => {
 
@@ -42,6 +50,88 @@ const MyBookings = () => {
     }
 
   }, [user]);
+
+  const openModal = (booking) => {
+
+    setSelectedBooking(booking);
+
+    setIsOpen(true);
+
+  };
+
+  const handleUpdate = async (e) => {
+
+    e.preventDefault();
+
+    const form = e.target;
+
+    const updatedData = {
+
+      patientName:
+        form.patientName.value,
+
+      gender:
+        form.gender.value,
+
+      phone:
+        form.phone.value,
+
+      appointmentDate:
+        form.appointmentDate.value,
+
+      appointmentTime:
+        form.appointmentTime.value,
+
+    };
+
+    try {
+
+      const res =
+        await axiosPublic.patch(
+          `/appointments/${selectedBooking._id}`,
+          updatedData
+        );
+
+      if (res.data.modifiedCount > 0) {
+
+        const updatedBookings =
+          bookings.map((booking) => {
+
+            if (
+              booking._id ===
+              selectedBooking._id
+            ) {
+
+              return {
+                ...booking,
+                ...updatedData,
+              };
+
+            }
+
+            return booking;
+
+          });
+
+        setBookings(updatedBookings);
+
+        setIsOpen(false);
+
+        toast.success(
+          "Appointment updated successfully!"
+        );
+
+      }
+
+    } catch (error) {
+
+      toast.error(
+        "Failed to update appointment"
+      );
+
+    }
+
+  };
 
   const handleDelete = async (id) => {
 
@@ -166,7 +256,12 @@ const MyBookings = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 mt-8">
 
-                      <button className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+                      <button
+                        onClick={() =>
+                          openModal(booking)
+                        }
+                        className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+                      >
                         Update
                       </button>
 
@@ -192,6 +287,86 @@ const MyBookings = () => {
 
           )
         }
+
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={() =>
+            setIsOpen(false)
+          }
+          className="max-w-2xl mx-auto mt-20 bg-white rounded-3xl p-8 outline-none"
+          overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50"
+        >
+
+          <h2 className="text-3xl font-bold text-center text-sky-500 mb-8">
+            Update Appointment
+          </h2>
+
+          <form
+            onSubmit={handleUpdate}
+            className="space-y-5"
+          >
+
+            <input
+              type="text"
+              name="patientName"
+              defaultValue={
+                selectedBooking?.patientName
+              }
+              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            />
+
+            <select
+              name="gender"
+              defaultValue={
+                selectedBooking?.gender
+              }
+              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            >
+
+              <option value="Male">
+                Male
+              </option>
+
+              <option value="Female">
+                Female
+              </option>
+
+            </select>
+
+            <input
+              type="text"
+              name="phone"
+              defaultValue={
+                selectedBooking?.phone
+              }
+              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            />
+
+            <input
+              type="date"
+              name="appointmentDate"
+              defaultValue={
+                selectedBooking?.appointmentDate
+              }
+              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            />
+
+            <input
+              type="time"
+              name="appointmentTime"
+              defaultValue={
+                selectedBooking?.appointmentTime
+              }
+              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            />
+
+            <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+              Save Changes
+            </button>
+
+          </form>
+
+        </Modal>
 
       </div>
 
