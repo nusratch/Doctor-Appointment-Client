@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout.jsx";
 import DashboardLayout from "../layouts/DashboardLayout.jsx";
 
-import Home from "../pages/Home/Home.jsx";
+import Home from "../pages/Home";
 import AllAppointments from "../pages/AllAppointments/AllAppointments.jsx";
 import DoctorDetails from "../pages/DoctorDetails/DoctorDetails.jsx";
 import BookAppointment from "../pages/BookAppointment/BookAppointment.jsx";
