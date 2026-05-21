@@ -1,22 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import MainLayout from "../layouts/MainLayout";
-import DashboardLayout from "../layouts/DashboardLayout";
+import MainLayout from "../layouts/MainLayout.jsx";
+import DashboardLayout from "../layouts/DashboardLayout.jsx";
 
-import Home from "../pages/Home/Home";
-import AllAppointments from "../pages/AllAppointments/AllAppointments";
-import DoctorDetails from "../pages/DoctorDetails/DoctorDetails";
-import BookAppointment from "../pages/BookAppointment/BookAppointment";
+import Home from "../pages/Home/Home.jsx";
+import AllAppointments from "../pages/AllAppointments/AllAppointments.jsx";
+import DoctorDetails from "../pages/DoctorDetails/DoctorDetails.jsx";
+import BookAppointment from "../pages/BookAppointment/BookAppointment.jsx";
 
-import Login from "../pages/Login/Login";
-import Register from "../pages/Register/Register";
+import Login from "../pages/Login/Login.jsx";
+import Register from "../pages/Register/Register.jsx";
 
-import MyBookings from "../pages/Dashboard/MyBookings/MyBookings";
-import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
+import MyBookings from "../pages/Dashboard/MyBookings/MyBookings.jsx";
+import MyProfile from "../pages/Dashboard/MyProfile/MyProfile.jsx";
 
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 
-import PrivateRoute from "../components/privateRoute/privateRoute";
+import PrivateRoute from "../components/privateRoute/privateRoute.jsx";
 
 const router = createBrowserRouter([
   {
