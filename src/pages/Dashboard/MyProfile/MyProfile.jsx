@@ -1,8 +1,141 @@
+import {
+  useContext,
+  useState,
+} from "react";
+
+import {
+  AuthContext,
+} from "../../../providers/AuthProvider";
+
+import { toast } from "react-toastify";
+
 const MyProfile = () => {
+
+  const {
+    user,
+    setUser,
+  } = useContext(AuthContext);
+
+  const [name, setName] =
+    useState(
+      user?.name || ""
+    );
+
+  const [image, setImage] =
+    useState(
+      user?.image || ""
+    );
+
+  const handleUpdateProfile = (e) => {
+
+    e.preventDefault();
+
+    const updatedUser = {
+
+      ...user,
+
+      name,
+
+      image,
+
+    };
+
+    setUser(updatedUser);
+
+    toast.success(
+      "Profile updated successfully!"
+    );
+
+  };
+
   return (
-    <div>
-      <h1>My Profile</h1>
+
+    <div className="bg-[#f4fbff] min-h-screen py-12 px-4">
+
+      <div className="max-w-3xl mx-auto">
+
+        <div className="bg-white rounded-3xl shadow-lg p-6 md:p-10">
+
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#3BA5F3] mb-10">
+            My Profile
+          </h2>
+
+          <div className="flex flex-col items-center mb-10">
+
+            <img
+              src={
+                image ||
+                "https://i.ibb.co/2kR9W0n/user.png"
+              }
+              alt="User"
+              className="w-32 h-32 rounded-full object-cover border-4 border-sky-300"
+            />
+
+            <h3 className="text-2xl font-bold mt-5 text-gray-800">
+              {name}
+            </h3>
+
+            <p className="text-gray-500 mt-2">
+              {user?.email}
+            </p>
+
+          </div>
+
+          <form
+            onSubmit={handleUpdateProfile}
+            className="space-y-6"
+          >
+
+            <div>
+
+              <label className="block mb-2 font-semibold text-gray-700">
+                Name
+              </label>
+
+              <input
+                type="text"
+                value={name}
+                onChange={(e) =>
+                  setName(
+                    e.target.value
+                  )
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+              />
+
+            </div>
+
+            <div>
+
+              <label className="block mb-2 font-semibold text-gray-700">
+                Photo URL
+              </label>
+
+              <input
+                type="text"
+                value={image}
+                onChange={(e) =>
+                  setImage(
+                    e.target.value
+                  )
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+              />
+
+            </div>
+
+            <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+              Update Profile
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
     </div>
+
   );
 };
 
