@@ -1,5 +1,5 @@
 import Hero from "../../components/Hero/Hero";
-import TopDoctors from "../../components/Topdoctors/topdoctors";
+import TopDoctors from "../../components/Topdoctors/Topdoctors";
 import Services from "../../components/Services/Services";
 import WhyChooseUs from "../../components/WhyChooseUs/WhyChooseUs";
 
