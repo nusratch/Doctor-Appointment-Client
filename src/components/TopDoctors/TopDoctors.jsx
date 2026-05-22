@@ -1,19 +1,48 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import DoctorCard from "../DoctorCard/DoctorCard";
 
 const TopDoctors = () => {
 
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
 
-    fetch("https://doctor-appointment-server-4nbo00mez-nusrats-projects-299df817.vercel.app/doctors")
+    fetch(
+      "https://doctor-appointment-server-seven.vercel.app/doctors"
+    )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setDoctors(data);
+
+        const topRatedDoctors =
+          data
+            .sort(
+              (a, b) =>
+                b.rating - a.rating
+            )
+            .slice(0, 3);
+
+        setDoctors(
+          topRatedDoctors
+        );
+
+        setLoading(false);
+
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+
+        console.log(error);
+
+        setLoading(false);
+
+      });
 
   }, []);
 
@@ -35,24 +64,45 @@ const TopDoctors = () => {
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          loading ? (
 
-          {
-            doctors?.map((doctor) => (
-              <DoctorCard
-                key={doctor._id}
-                doctor={doctor}
-              />
-            ))
-          }
+            <div className="flex justify-center items-center py-20">
 
-        </div>
+              <span className="loading loading-spinner loading-lg text-sky-500"></span>
+
+            </div>
+
+          ) : (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              {
+                doctors.map(
+                  (doctor) => (
+
+                    <DoctorCard
+                      key={
+                        doctor._id
+                      }
+                      doctor={doctor}
+                    />
+
+                  )
+                )
+              }
+
+            </div>
+
+          )
+        }
 
       </div>
 
     </div>
 
   );
+
 };
 
 export default TopDoctors;
