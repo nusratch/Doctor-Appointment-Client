@@ -4,9 +4,14 @@ import DoctorCard from "../../components/DoctorCard/DoctorCard";
 
 const AllAppointments = () => {
 
-  const [doctors, setDoctors] = useState([]);
-  const [searchText, setSearchText] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [doctors, setDoctors] =
+    useState([]);
+
+  const [searchText, setSearchText] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
 
@@ -31,11 +36,14 @@ const AllAppointments = () => {
 
   }, []);
 
-  const filteredDoctors = doctors.filter((doctor) =>
-    doctor.name
-      .toLowerCase()
-      .includes(searchText.toLowerCase())
-  );
+  const filteredDoctors =
+    doctors.filter((doctor) =>
+      doctor.name
+        .toLowerCase()
+        .includes(
+          searchText.toLowerCase()
+        )
+    );
 
   return (
 
@@ -62,7 +70,9 @@ const AllAppointments = () => {
             placeholder="Search doctor by name..."
             value={searchText}
             onChange={(e) =>
-              setSearchText(e.target.value)
+              setSearchText(
+                e.target.value
+              )
             }
             className="w-full px-5 py-4 rounded-2xl border border-sky-200 focus:outline-none focus:border-sky-400"
           />
@@ -83,14 +93,18 @@ const AllAppointments = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
               {
-                filteredDoctors.map((doctor) => (
+                filteredDoctors.map(
+                  (doctor) => (
 
-                  <DoctorCard
-                    key={doctor._id}
-                    doctor={doctor}
-                  />
+                    <DoctorCard
+                      key={
+                        doctor._id
+                      }
+                      doctor={doctor}
+                    />
 
-                ))
+                  )
+                )
               }
 
             </div>
