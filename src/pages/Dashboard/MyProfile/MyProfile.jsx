@@ -113,6 +113,21 @@ const MyProfile = () => {
             <div>
 
               <label className="block mb-2 font-semibold text-gray-700">
+                Email
+              </label>
+
+              <input
+                type="email"
+                value={user?.email || ""}
+                readOnly
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-gray-100 cursor-not-allowed"
+              />
+
+            </div>
+
+            <div>
+
+              <label className="block mb-2 font-semibold text-gray-700">
                 Photo URL
               </label>
 
