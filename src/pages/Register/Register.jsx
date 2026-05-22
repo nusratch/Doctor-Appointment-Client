@@ -9,116 +9,174 @@ import {
 
 import { toast } from "react-toastify";
 
+import { authClient } from "../../lib/auth-client";
+
 const Register = () => {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const [error, setError] =
     useState("");
 
-  const handleRegister = async (e) => {
+  const handleRegister =
+    async (e) => {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    setError("");
+      setError("");
 
-    const form = e.target;
+      const form =
+        e.target;
 
-    const name = form.name.value;
+      const name =
+        form.name.value;
 
-    const email = form.email.value;
+      const email =
+        form.email.value;
 
-    const photo = form.photo.value;
+      const photo =
+        form.photo.value;
 
-    const password = form.password.value;
+      const password =
+        form.password.value;
 
-    // PASSWORD VALIDATION
+      // PASSWORD VALIDATION
 
-    if (password.length < 6) {
+      if (
+        password.length < 6
+      ) {
 
-      setError(
-        "Password must be at least 6 characters"
-      );
-
-      return;
-
-    }
-
-    if (!/[A-Z]/.test(password)) {
-
-      setError(
-        "Password must contain at least 1 uppercase letter"
-      );
-
-      return;
-
-    }
-
-    if (!/[a-z]/.test(password)) {
-
-      setError(
-        "Password must contain at least 1 lowercase letter"
-      );
-
-      return;
-
-    }
-
-    const userInfo = {
-
-      name,
-      email,
-      photo,
-      password,
-
-    };
-
-    try {
-
-      const res = await fetch(
-        "https://doctor-appointment-server-seven.vercel.app/register",
-        {
-
-          method: "POST",
-
-          headers: {
-            "content-type": "application/json",
-          },
-
-          body: JSON.stringify(userInfo),
-
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.insertedId) {
-
-        toast.success(
-          "Registration Successful"
+        setError(
+          "Password must be at least 6 characters"
         );
 
-        navigate("/login");
+        return;
 
-      } else {
+      }
+
+      if (
+        !/[A-Z]/.test(
+          password
+        )
+      ) {
+
+        setError(
+          "Password must contain at least 1 uppercase letter"
+        );
+
+        return;
+
+      }
+
+      if (
+        !/[a-z]/.test(
+          password
+        )
+      ) {
+
+        setError(
+          "Password must contain at least 1 lowercase letter"
+        );
+
+        return;
+
+      }
+
+      const userInfo = {
+
+        name,
+        email,
+        photo,
+        password,
+
+      };
+
+      try {
+
+        const res =
+          await fetch(
+            "https://doctor-appointment-server-seven.vercel.app/register",
+            {
+
+              method: "POST",
+
+              headers: {
+                "content-type":
+                  "application/json",
+              },
+
+              body: JSON.stringify(
+                userInfo
+              ),
+
+            }
+          );
+
+        const data =
+          await res.json();
+
+        if (
+          data.insertedId
+        ) {
+
+          toast.success(
+            "Registration Successful"
+          );
+
+          navigate(
+            "/login"
+          );
+
+        } else {
+
+          toast.error(
+            data.message ||
+              "Registration Failed"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(
+          error
+        );
 
         toast.error(
-          data.message || "Registration Failed"
+          "Registration Failed"
         );
 
       }
 
-    } catch (error) {
+    };
 
-      console.log(error);
+  const handleGoogleSignup =
+    async () => {
 
-      toast.error(
-        "Registration Failed"
-      );
+      try {
 
-    }
+        await authClient.signIn.social({
 
-  };
+          provider:
+            "google",
+
+          callbackURL:
+            "/",
+
+        });
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Google Signup Failed"
+        );
+
+      }
+
+    };
 
   return (
 
@@ -131,7 +189,9 @@ const Register = () => {
         </h2>
 
         <form
-          onSubmit={handleRegister}
+          onSubmit={
+            handleRegister
+          }
           className="space-y-5"
         >
 
@@ -213,6 +273,19 @@ const Register = () => {
           </button>
 
         </form>
+
+        <div className="divider text-gray-400">
+          OR
+        </div>
+
+        <button
+          onClick={
+            handleGoogleSignup
+          }
+          className="btn w-full bg-white hover:bg-gray-100 text-black border border-gray-300 rounded-xl"
+        >
+          Continue with Google
+        </button>
 
         <p className="text-center mt-6 text-sm text-gray-600">
 

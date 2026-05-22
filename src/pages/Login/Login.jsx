@@ -1,71 +1,124 @@
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
 import { toast } from "react-toastify";
+
+import { authClient } from "../../lib/auth-client";
+
 const Login = () => {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin =
+    async (e) => {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const form = e.target;
+      const form =
+        e.target;
 
-    const email = form.email.value;
+      const email =
+        form.email.value;
 
-    const password = form.password.value;
+      const password =
+        form.password.value;
 
-    const userInfo = {
-      email,
-      password,
-    };
+      const userInfo = {
+        email,
+        password,
+      };
 
-    try {
+      try {
 
-      const res = await fetch(
-        "https://doctor-appointment-server-seven.vercel.app/login",
-        {
-          method: "POST",
+        const res =
+          await fetch(
+            "https://doctor-appointment-server-seven.vercel.app/login",
+            {
+              method: "POST",
 
-          headers: {
-            "content-type": "application/json",
-          },
+              headers: {
+                "content-type":
+                  "application/json",
+              },
 
-          body: JSON.stringify(userInfo),
+              body: JSON.stringify(
+                userInfo
+              ),
+            }
+          );
+
+        const data =
+          await res.json();
+
+        if (data.token) {
+
+          localStorage.setItem(
+            "access-token",
+            data.token
+          );
+
+          localStorage.setItem(
+            "logged-user",
+            JSON.stringify(
+              data.user
+            )
+          );
+
+          toast.success(
+            "Login Successful"
+          );
+
+          navigate("/");
+
+        } else {
+
+          toast.error(
+            data.message
+          );
+
         }
-      );
 
-      const data = await res.json();
+      } catch (error) {
 
-      if (data.token) {
+        console.log(error);
 
-        localStorage.setItem(
-          "access-token",
-          data.token
+        toast.error(
+          "Login Failed"
         );
-
-        localStorage.setItem(
-  "logged-user",
-  JSON.stringify(data.user)
-);
-
-        toast.success("Login Successful");
-
-        navigate("/");
-
-      } else {
-
-        toast.error(data.message);
 
       }
 
-    } catch (error) {
+    };
 
-      console.log(error);
-      toast.error("Login Failed");
+  const handleGoogleLogin =
+    async () => {
 
-    }
+      try {
 
-  };
+        await authClient.signIn.social({
+
+          provider:
+            "google",
+
+          callbackURL:
+            "/",
+
+        });
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Google Login Failed"
+        );
+
+      }
+
+    };
 
   return (
 
@@ -78,7 +131,9 @@ const Login = () => {
         </h2>
 
         <form
-          onSubmit={handleLogin}
+          onSubmit={
+            handleLogin
+          }
           className="space-y-5"
         >
 
@@ -120,6 +175,19 @@ const Login = () => {
 
         </form>
 
+        <div className="divider text-gray-400">
+          OR
+        </div>
+
+        <button
+          onClick={
+            handleGoogleLogin
+          }
+          className="btn w-full bg-white hover:bg-gray-100 text-black border border-gray-300 rounded-xl"
+        >
+          Continue with Google
+        </button>
+
         <p className="text-center mt-6 text-sm text-gray-600">
 
           Don’t have an account?
@@ -138,6 +206,7 @@ const Login = () => {
     </div>
 
   );
+
 };
 
 export default Login;
