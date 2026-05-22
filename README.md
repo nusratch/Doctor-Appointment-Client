@@ -7,10 +7,10 @@ A modern full-stack MERN doctor appointment booking platform where users can exp
 ##  Live Website
 
 🌐 Frontend Live:
-https://doctor-appointment-client-n1e60gj1w-nusrats-projects-299df817.vercel.app
+ "https://doctor-appointment-client-psi.vercel.app"
 
 🌐 Backend Live:
-https://doctor-appointment-server-b7yksvdc8-nusrats-projects-299df817.vercel.app
+  "https://doctor-appointment-server-seven.vercel.app"
 
 
 
