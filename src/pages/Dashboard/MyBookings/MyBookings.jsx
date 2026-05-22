@@ -23,6 +23,16 @@ const MyBookings = () => {
   const { user } =
     useContext(AuthContext);
 
+  const storedUser =
+    JSON.parse(
+      localStorage.getItem(
+        "logged-user"
+      )
+    );
+
+  const currentUser =
+    user || storedUser;
+
   const [bookings, setBookings] =
     useState([]);
 
@@ -37,11 +47,11 @@ const MyBookings = () => {
 
   useEffect(() => {
 
-    if (user?.email) {
+    if (currentUser?.email) {
 
       axiosPublic
         .get(
-          `/appointments?email=${user.email}`
+          `/appointments?email=${currentUser.email}`
         )
 
         .then((res) => {
@@ -66,7 +76,7 @@ const MyBookings = () => {
 
     }
 
-  }, [user]);
+  }, [currentUser]);
 
   const openModal = (booking) => {
 
@@ -220,7 +230,7 @@ const MyBookings = () => {
 
       </Helmet>
 
-      <div className="bg-[#f4fbff] min-h-screen py-12 px-4">
+      <div className="bg-[#f4fbff] dark:bg-[#0f172a] min-h-screen py-12 px-4 duration-300">
 
         <div className="max-w-6xl mx-auto">
 
@@ -231,13 +241,13 @@ const MyBookings = () => {
           {
             bookings.length === 0 ? (
 
-              <div className="bg-white rounded-3xl shadow-lg p-10 text-center">
+              <div className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg p-10 text-center duration-300">
 
-                <h3 className="text-2xl font-bold text-gray-700 mb-3">
+                <h3 className="text-2xl font-bold text-gray-700 dark:text-white mb-3">
                   No appointments booked yet
                 </h3>
 
-                <p className="text-gray-500">
+                <p className="text-gray-500 dark:text-gray-300">
                   Please book an appointment first.
                 </p>
 
@@ -252,10 +262,10 @@ const MyBookings = () => {
 
                     <div
                       key={booking._id}
-                      className="bg-white rounded-3xl shadow-lg p-6"
+                      className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg p-6 duration-300"
                     >
 
-                      <div className="space-y-3">
+                      <div className="space-y-3 text-gray-700 dark:text-gray-200">
 
                         <h3 className="text-2xl font-bold text-[#3BA5F3]">
                           {booking.doctorName}
@@ -337,7 +347,7 @@ const MyBookings = () => {
             onRequestClose={() =>
               setIsOpen(false)
             }
-            className="max-w-2xl mx-auto mt-20 bg-white rounded-3xl p-8 outline-none"
+            className="max-w-2xl mx-auto mt-20 bg-white dark:bg-[#1e293b] rounded-3xl p-8 outline-none duration-300"
             overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50"
           >
 
@@ -356,7 +366,7 @@ const MyBookings = () => {
                 defaultValue={
                   selectedBooking?.patientName
                 }
-                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white dark:bg-[#0f172a] dark:text-white"
               />
 
               <select
@@ -364,7 +374,7 @@ const MyBookings = () => {
                 defaultValue={
                   selectedBooking?.gender
                 }
-                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white dark:bg-[#0f172a] dark:text-white"
               >
 
                 <option value="Male">
@@ -383,7 +393,7 @@ const MyBookings = () => {
                 defaultValue={
                   selectedBooking?.phone
                 }
-                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white dark:bg-[#0f172a] dark:text-white"
               />
 
               <input
@@ -392,7 +402,7 @@ const MyBookings = () => {
                 defaultValue={
                   selectedBooking?.appointmentDate
                 }
-                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white dark:bg-[#0f172a] dark:text-white"
               />
 
               <input
@@ -401,7 +411,7 @@ const MyBookings = () => {
                 defaultValue={
                   selectedBooking?.appointmentTime
                 }
-                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-white dark:bg-[#0f172a] dark:text-white"
               />
 
               <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white">
