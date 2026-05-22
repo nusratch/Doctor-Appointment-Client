@@ -14,6 +14,8 @@ import {
 
 import { toast } from "react-toastify";
 
+Modal.setAppElement("#root");
+
 const MyBookings = () => {
 
   const { user } =
@@ -33,140 +35,208 @@ const MyBookings = () => {
 
   useEffect(() => {
 
-    if (user?.email) {
+    const fetchBookings =
+      async () => {
 
-      axiosPublic
-        .get(
-          `/appointments?email=${user.email}`
-        )
-        .then((res) => {
+        try {
 
-          setBookings(res.data);
+          const res =
+            await axiosPublic.get(
+              "/appointments"
+            );
+
+          const userBookings =
+            res.data.filter(
+              (booking) =>
+                booking.userEmail ===
+                user?.email
+            );
+
+          setBookings(
+            userBookings
+          );
 
           setLoading(false);
 
-        });
+        } catch (error) {
+
+          console.log(error);
+
+          setLoading(false);
+
+        }
+
+      };
+
+    if (user?.email) {
+
+      fetchBookings();
+
+    } else {
+
+      setLoading(false);
 
     }
 
   }, [user]);
 
-  const openModal = (booking) => {
+  const openModal = (
+    booking
+  ) => {
 
-    setSelectedBooking(booking);
+    setSelectedBooking(
+      booking
+    );
 
     setIsOpen(true);
 
   };
 
-  const handleUpdate = async (e) => {
+  const closeModal = () => {
 
-    e.preventDefault();
+    setIsOpen(false);
 
-    const form = e.target;
+    setSelectedBooking(null);
 
-    const updatedData = {
+  };
 
-      patientName:
-        form.patientName.value,
+  const handleUpdate =
+    async (e) => {
 
-      gender:
-        form.gender.value,
+      e.preventDefault();
 
-      phone:
-        form.phone.value,
+      const form =
+        e.target;
 
-      appointmentDate:
-        form.appointmentDate.value,
+      const updatedData = {
 
-      appointmentTime:
-        form.appointmentTime.value,
+        patientName:
+          form.patientName.value,
+
+        gender:
+          form.gender.value,
+
+        phone:
+          form.phone.value,
+
+        appointmentDate:
+          form.appointmentDate.value,
+
+        appointmentTime:
+          form.appointmentTime.value,
+
+      };
+
+      try {
+
+        const res =
+          await axiosPublic.patch(
+            `/appointments/${selectedBooking._id}`,
+            updatedData
+          );
+
+        if (
+          res.data.modifiedCount >
+          0
+        ) {
+
+          const updatedBookings =
+            bookings.map(
+              (booking) => {
+
+                if (
+                  booking._id ===
+                  selectedBooking._id
+                ) {
+
+                  return {
+                    ...booking,
+                    ...updatedData,
+                  };
+
+                }
+
+                return booking;
+
+              }
+            );
+
+          setBookings(
+            updatedBookings
+          );
+
+          closeModal();
+
+          toast.success(
+            "Appointment updated successfully!"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed to update appointment"
+        );
+
+      }
 
     };
 
-    try {
+  const handleDelete =
+    async (id) => {
 
-      const res =
-        await axiosPublic.patch(
-          `/appointments/${selectedBooking._id}`,
-          updatedData
+      const confirmDelete =
+        window.confirm(
+          "Are you sure you want to delete this appointment?"
         );
 
-      if (res.data.modifiedCount > 0) {
-
-        const updatedBookings =
-          bookings.map((booking) => {
-
-            if (
-              booking._id ===
-              selectedBooking._id
-            ) {
-
-              return {
-                ...booking,
-                ...updatedData,
-              };
-
-            }
-
-            return booking;
-
-          });
-
-        setBookings(updatedBookings);
-
-        setIsOpen(false);
-
-        toast.success(
-          "Appointment updated successfully!"
-        );
-
+      if (!confirmDelete) {
+        return;
       }
 
-    } catch (error) {
+      try {
 
-      toast.error(
-        "Failed to update appointment"
-      );
-
-    }
-
-  };
-
-  const handleDelete = async (id) => {
-
-    try {
-
-      const res =
-        await axiosPublic.delete(
-          `/appointments/${id}`
-        );
-
-      if (res.data.deletedCount > 0) {
-
-        const remaining =
-          bookings.filter(
-            (booking) =>
-              booking._id !== id
+        const res =
+          await axiosPublic.delete(
+            `/appointments/${id}`
           );
 
-        setBookings(remaining);
+        if (
+          res.data.deletedCount >
+          0
+        ) {
 
-        toast.success(
-          "Appointment deleted successfully!"
+          const remaining =
+            bookings.filter(
+              (booking) =>
+                booking._id !==
+                id
+            );
+
+          setBookings(
+            remaining
+          );
+
+          toast.success(
+            "Appointment deleted successfully!"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed to delete appointment"
         );
 
       }
 
-    } catch (error) {
-
-      toast.error(
-        "Failed to delete appointment"
-      );
-
-    }
-
-  };
+    };
 
   if (loading) {
 
@@ -193,10 +263,19 @@ const MyBookings = () => {
         </h2>
 
         {
-          bookings.length === 0 ? (
+          bookings.length ===
+          0 ? (
 
-            <div className="text-center text-gray-500 text-lg">
-              No appointments booked yet.
+            <div className="bg-white rounded-3xl shadow-lg p-10 text-center">
+
+              <h3 className="text-2xl font-bold text-gray-700 mb-4">
+                No appointments booked yet
+              </h3>
+
+              <p className="text-gray-500">
+                Please book an appointment first.
+              </p>
+
             </div>
 
           ) : (
@@ -204,83 +283,101 @@ const MyBookings = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
               {
-                bookings.map((booking) => (
+                bookings.map(
+                  (booking) => (
 
-                  <div
-                    key={booking._id}
-                    className="bg-white rounded-3xl shadow-lg p-6"
-                  >
+                    <div
+                      key={
+                        booking._id
+                      }
+                      className="bg-white rounded-3xl shadow-lg p-6"
+                    >
 
-                    <div className="space-y-3">
+                      <div className="space-y-3">
 
-                      <h3 className="text-2xl font-bold text-[#3BA5F3]">
-                        {booking.doctorName}
-                      </h3>
+                        <h3 className="text-2xl font-bold text-[#3BA5F3]">
+                          {
+                            booking.doctorName
+                          }
+                        </h3>
 
-                      <p className="text-gray-700">
-                        <span className="font-semibold">
-                          Patient:
-                        </span>{" "}
-                        {booking.patientName}
-                      </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            Patient:
+                          </span>{" "}
+                          {
+                            booking.patientName
+                          }
+                        </p>
 
-                      <p className="text-gray-700">
-                        <span className="font-semibold">
-                          Gender:
-                        </span>{" "}
-                        {booking.gender}
-                      </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            Gender:
+                          </span>{" "}
+                          {
+                            booking.gender
+                          }
+                        </p>
 
-                      <p className="text-gray-700">
-                        <span className="font-semibold">
-                          Phone:
-                        </span>{" "}
-                        {booking.phone}
-                      </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            Phone:
+                          </span>{" "}
+                          {
+                            booking.phone
+                          }
+                        </p>
 
-                      <p className="text-gray-700">
-                        <span className="font-semibold">
-                          Date:
-                        </span>{" "}
-                        {booking.appointmentDate}
-                      </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            Date:
+                          </span>{" "}
+                          {
+                            booking.appointmentDate
+                          }
+                        </p>
 
-                      <p className="text-gray-700">
-                        <span className="font-semibold">
-                          Time:
-                        </span>{" "}
-                        {booking.appointmentTime}
-                      </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            Time:
+                          </span>{" "}
+                          {
+                            booking.appointmentTime
+                          }
+                        </p>
+
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-4 mt-8">
+
+                        <button
+                          onClick={() =>
+                            openModal(
+                              booking
+                            )
+                          }
+                          className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+                        >
+                          Update
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleDelete(
+                              booking._id
+                            )
+                          }
+                          className="btn flex-1 bg-red-500 hover:bg-red-600 border-none text-white rounded-xl"
+                        >
+                          Delete
+                        </button>
+
+                      </div>
 
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 mt-8">
-
-                      <button
-                        onClick={() =>
-                          openModal(booking)
-                        }
-                        className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
-                      >
-                        Update
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            booking._id
-                          )
-                        }
-                        className="btn flex-1 bg-red-500 hover:bg-red-600 border-none text-white rounded-xl"
-                      >
-                        Delete
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                ))
+                  )
+                )
               }
 
             </div>
@@ -290,11 +387,11 @@ const MyBookings = () => {
 
         <Modal
           isOpen={isOpen}
-          onRequestClose={() =>
-            setIsOpen(false)
+          onRequestClose={
+            closeModal
           }
           className="max-w-2xl mx-auto mt-20 bg-white rounded-3xl p-8 outline-none"
-          overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50"
+          overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50 overflow-y-auto"
         >
 
           <h2 className="text-3xl font-bold text-center text-sky-500 mb-8">
@@ -302,7 +399,9 @@ const MyBookings = () => {
           </h2>
 
           <form
-            onSubmit={handleUpdate}
+            onSubmit={
+              handleUpdate
+            }
             className="space-y-5"
           >
 
@@ -313,6 +412,7 @@ const MyBookings = () => {
                 selectedBooking?.patientName
               }
               className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              required
             />
 
             <select
@@ -340,6 +440,7 @@ const MyBookings = () => {
                 selectedBooking?.phone
               }
               className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              required
             />
 
             <input
@@ -349,6 +450,7 @@ const MyBookings = () => {
                 selectedBooking?.appointmentDate
               }
               className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              required
             />
 
             <input
@@ -358,11 +460,26 @@ const MyBookings = () => {
                 selectedBooking?.appointmentTime
               }
               className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              required
             />
 
-            <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
-              Save Changes
-            </button>
+            <div className="flex gap-4">
+
+              <button className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+                Save Changes
+              </button>
+
+              <button
+                type="button"
+                onClick={
+                  closeModal
+                }
+                className="btn flex-1 bg-gray-300 hover:bg-gray-400 border-none text-black rounded-xl"
+              >
+                Cancel
+              </button>
+
+            </div>
 
           </form>
 
@@ -373,6 +490,7 @@ const MyBookings = () => {
     </div>
 
   );
+
 };
 
 export default MyBookings;
