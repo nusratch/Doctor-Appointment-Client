@@ -7,7 +7,7 @@ const TopDoctors = () => {
 
   useEffect(() => {
 
-    fetch("https://doctor-appointment-server-era2ha38a-nusrats-projects-299df817.vercel.app/doctors")
+    fetch("https://doctor-appointment-server-seven.vercel.app")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
