@@ -42,6 +42,11 @@ const MyProfile = () => {
 
     setUser(updatedUser);
 
+    localStorage.setItem(
+      "logged-user",
+      JSON.stringify(updatedUser)
+    );
+
     toast.success(
       "Profile updated successfully!"
     );
@@ -65,14 +70,14 @@ const MyProfile = () => {
             <img
               src={
                 image ||
-                "https://i.ibb.co/2kR9W0n/user.png"
+                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               }
               alt="User"
               className="w-32 h-32 rounded-full object-cover border-4 border-sky-300"
             />
 
             <h3 className="text-2xl font-bold mt-5 text-gray-800">
-              {name}
+              {name || "User"}
             </h3>
 
             <p className="text-gray-500 mt-2">

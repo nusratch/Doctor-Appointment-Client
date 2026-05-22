@@ -119,9 +119,12 @@ const Navbar = () => {
           loggedUser ? (
             <>
 
-              <div className="w-11 h-11 rounded-full border-2 border-sky-300 flex items-center justify-center text-2xl bg-white">
+              <Link
+                to="/dashboard/my-profile"
+                className="w-11 h-11 rounded-full border-2 border-sky-300 flex items-center justify-center text-2xl bg-white hover:bg-sky-50 duration-200"
+              >
                 👤
-              </div>
+              </Link>
 
               <button
                 onClick={handleLogout}

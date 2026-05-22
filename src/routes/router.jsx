@@ -19,11 +19,16 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 import PrivateRoute from "../components/privateRoute/privateRoute.jsx";
 
 const router = createBrowserRouter([
+
   {
     path: "/",
+
     element: <MainLayout />,
+
     errorElement: <ErrorPage />,
+
     children: [
+
       {
         path: "/",
         element: <Home />,
@@ -31,11 +36,17 @@ const router = createBrowserRouter([
 
       {
         path: "/appointments",
-        element: <AllAppointments />,
+
+        element: (
+          <PrivateRoute>
+            <AllAppointments />
+          </PrivateRoute>
+        ),
       },
 
       {
         path: "/doctor/:id",
+
         element: (
           <PrivateRoute>
             <DoctorDetails />
@@ -45,6 +56,7 @@ const router = createBrowserRouter([
 
       {
         path: "/book-appointment/:id",
+
         element: (
           <PrivateRoute>
             <BookAppointment />
@@ -61,11 +73,13 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+
     ],
   },
 
   {
     path: "/dashboard",
+
     element: (
       <PrivateRoute>
         <DashboardLayout />
@@ -73,17 +87,30 @@ const router = createBrowserRouter([
     ),
 
     children: [
+
       {
         path: "my-bookings",
-        element: <MyBookings />,
+
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
       },
 
       {
         path: "my-profile",
-        element: <MyProfile />,
+
+        element: (
+          <PrivateRoute>
+            <MyProfile />
+          </PrivateRoute>
+        ),
       },
+
     ],
   },
+
 ]);
 
 export default router;
