@@ -51,6 +51,10 @@ const MyProfile = () => {
       "Profile updated successfully!"
     );
 
+    document
+      .getElementById("update_modal")
+      .close();
+
   };
 
   return (
@@ -86,9 +90,35 @@ const MyProfile = () => {
 
           </div>
 
+          <button
+            onClick={() =>
+              document
+                .getElementById("update_modal")
+                .showModal()
+            }
+            className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+          >
+            Update Profile
+          </button>
+
+        </div>
+
+      </div>
+
+      <dialog
+        id="update_modal"
+        className="modal"
+      >
+
+        <div className="modal-box rounded-3xl">
+
+          <h3 className="font-bold text-2xl text-center text-sky-500 mb-6">
+            Update Profile
+          </h3>
+
           <form
             onSubmit={handleUpdateProfile}
-            className="space-y-6"
+            className="space-y-5"
           >
 
             <div>
@@ -145,14 +175,26 @@ const MyProfile = () => {
             </div>
 
             <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
-              Update Profile
+              Save Changes
             </button>
 
           </form>
 
+          <div className="modal-action">
+
+            <form method="dialog">
+
+              <button className="btn rounded-xl">
+                Close
+              </button>
+
+            </form>
+
+          </div>
+
         </div>
 
-      </div>
+      </dialog>
 
     </div>
 
