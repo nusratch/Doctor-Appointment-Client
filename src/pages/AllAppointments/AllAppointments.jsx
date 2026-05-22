@@ -5,20 +5,36 @@ import DoctorCard from "../../components/DoctorCard/DoctorCard";
 const AllAppointments = () => {
 
   const [doctors, setDoctors] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
     fetch(
-      "https://doctor-appointment-server-4nbo00mez-nusrats-projects-299df817.vercel.app"
+      "https://doctor-appointment-server-seven.vercel.app/doctors"
     )
       .then((res) => res.json())
-      .then((data) => setDoctors(data));
+      .then((data) => {
+
+        setDoctors(data);
+
+        setLoading(false);
+
+      })
+      .catch((error) => {
+
+        console.log(error);
+
+        setLoading(false);
+
+      });
 
   }, []);
 
   const filteredDoctors = doctors.filter((doctor) =>
-    doctor.name.toLowerCase().includes(searchText.toLowerCase())
+    doctor.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase())
   );
 
   return (
@@ -45,24 +61,42 @@ const AllAppointments = () => {
             type="text"
             placeholder="Search doctor by name..."
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) =>
+              setSearchText(e.target.value)
+            }
             className="w-full px-5 py-4 rounded-2xl border border-sky-200 focus:outline-none focus:border-sky-400"
           />
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          loading ? (
 
-          {
-            filteredDoctors.map((doctor) => (
-              <DoctorCard
-                key={doctor.id}
-                doctor={doctor}
-              />
-            ))
-          }
+            <div className="flex justify-center items-center py-20">
 
-        </div>
+              <span className="loading loading-spinner loading-lg text-sky-500"></span>
+
+            </div>
+
+          ) : (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              {
+                filteredDoctors.map((doctor) => (
+
+                  <DoctorCard
+                    key={doctor._id}
+                    doctor={doctor}
+                  />
+
+                ))
+              }
+
+            </div>
+
+          )
+        }
 
       </div>
 

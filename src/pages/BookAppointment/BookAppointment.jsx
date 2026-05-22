@@ -1,36 +1,155 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
+import { toast } from "react-toastify";
+
+import {
+  AuthContext,
+} from "../../providers/AuthProvider";
 
 const BookAppointment = () => {
 
   const { id } = useParams();
 
-  const [doctor, setDoctor] = useState(null);
+  const navigate = useNavigate();
+
+  const { user } =
+    useContext(AuthContext);
+
+  const [doctor, setDoctor] =
+    useState(null);
 
   useEffect(() => {
 
     fetch(
-      "https://doctor-appointment-server-4nbo00mez-nusrats-projects-299df817.vercel.app"
+      `https://doctor-appointment-server-seven.vercel.app/doctors/${id}`
     )
       .then((res) => res.json())
       .then((data) => {
 
-        const singleDoctor = data.find(
-          (doctor) => doctor.id === id
-        );
+        setDoctor(data);
 
-        setDoctor(singleDoctor);
+      })
+      .catch((error) => {
+
+        console.log(error);
 
       });
 
   }, [id]);
 
+  const handleBookAppointment =
+    async (e) => {
+
+      e.preventDefault();
+
+      const form = e.target;
+
+      const patientName =
+        form.patientName.value;
+
+      const gender =
+        form.gender.value;
+
+      const phone =
+        form.phone.value;
+
+      const appointmentDate =
+        form.appointmentDate.value;
+
+      const appointmentTime =
+        form.appointmentTime.value;
+
+      const appointmentData = {
+
+        userEmail: user?.email,
+
+        doctorName: doctor?.name,
+
+        doctorImage:
+          doctor?.image,
+
+        patientName,
+
+        gender,
+
+        phone,
+
+        appointmentDate,
+
+        appointmentTime,
+
+        fee: doctor?.fee,
+
+      };
+
+      try {
+
+        const res = await fetch(
+          "https://doctor-appointment-server-seven.vercel.app/appointments",
+          {
+
+            method: "POST",
+
+            headers: {
+              "content-type":
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              appointmentData
+            ),
+
+          }
+        );
+
+        const data =
+          await res.json();
+
+        if (data.insertedId) {
+
+          toast.success(
+            "Appointment booked successfully!"
+          );
+
+          navigate(
+            "/dashboard/my-bookings"
+          );
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Failed to book appointment"
+        );
+
+      }
+
+    };
+
   if (!doctor) {
+
     return (
+
       <div className="min-h-screen flex items-center justify-center">
+
         <span className="loading loading-spinner loading-lg text-info"></span>
+
       </div>
+
     );
+
   }
 
   return (
@@ -45,7 +164,12 @@ const BookAppointment = () => {
             Book Appointment
           </h2>
 
-          <form className="space-y-5">
+          <form
+            onSubmit={
+              handleBookAppointment
+            }
+            className="space-y-5"
+          >
 
             <div>
 
@@ -55,7 +179,7 @@ const BookAppointment = () => {
 
               <input
                 type="text"
-                value={doctor.name}
+                value={doctor?.name}
                 readOnly
                 className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-gray-100"
               />
@@ -70,8 +194,10 @@ const BookAppointment = () => {
 
               <input
                 type="text"
+                name="patientName"
                 placeholder="Enter patient name"
                 className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                required
               />
 
             </div>
@@ -82,10 +208,18 @@ const BookAppointment = () => {
                 Gender
               </label>
 
-              <select className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400">
+              <select
+                name="gender"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+              >
 
-                <option>Male</option>
-                <option>Female</option>
+                <option value="Male">
+                  Male
+                </option>
+
+                <option value="Female">
+                  Female
+                </option>
 
               </select>
 
@@ -99,8 +233,10 @@ const BookAppointment = () => {
 
               <input
                 type="text"
+                name="phone"
                 placeholder="Enter phone number"
                 className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                required
               />
 
             </div>
@@ -113,7 +249,24 @@ const BookAppointment = () => {
 
               <input
                 type="date"
+                name="appointmentDate"
                 className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                required
+              />
+
+            </div>
+
+            <div>
+
+              <label className="block mb-2 font-semibold text-gray-700">
+                Appointment Time
+              </label>
+
+              <input
+                type="time"
+                name="appointmentTime"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                required
               />
 
             </div>

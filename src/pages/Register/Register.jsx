@@ -1,13 +1,26 @@
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  useState,
+} from "react";
+
 import { toast } from "react-toastify";
 
 const Register = () => {
 
   const navigate = useNavigate();
 
+  const [error, setError] =
+    useState("");
+
   const handleRegister = async (e) => {
 
     e.preventDefault();
+
+    setError("");
 
     const form = e.target;
 
@@ -19,11 +32,45 @@ const Register = () => {
 
     const password = form.password.value;
 
+    // PASSWORD VALIDATION
+
+    if (password.length < 6) {
+
+      setError(
+        "Password must be at least 6 characters"
+      );
+
+      return;
+
+    }
+
+    if (!/[A-Z]/.test(password)) {
+
+      setError(
+        "Password must contain at least 1 uppercase letter"
+      );
+
+      return;
+
+    }
+
+    if (!/[a-z]/.test(password)) {
+
+      setError(
+        "Password must contain at least 1 lowercase letter"
+      );
+
+      return;
+
+    }
+
     const userInfo = {
+
       name,
       email,
       photo,
       password,
+
     };
 
     try {
@@ -31,6 +78,7 @@ const Register = () => {
       const res = await fetch(
         "https://doctor-appointment-server-seven.vercel.app/register",
         {
+
           method: "POST",
 
           headers: {
@@ -38,6 +86,7 @@ const Register = () => {
           },
 
           body: JSON.stringify(userInfo),
+
         }
       );
 
@@ -45,13 +94,17 @@ const Register = () => {
 
       if (data.insertedId) {
 
-        toast.success("Registration Successful");
+        toast.success(
+          "Registration Successful"
+        );
 
         navigate("/login");
 
       } else {
 
-        toast.error(data.message);
+        toast.error(
+          data.message || "Registration Failed"
+        );
 
       }
 
@@ -59,7 +112,9 @@ const Register = () => {
 
       console.log(error);
 
-      toast.error("Registration Failed");
+      toast.error(
+        "Registration Failed"
+      );
 
     }
 
@@ -143,6 +198,16 @@ const Register = () => {
 
           </div>
 
+          {
+            error && (
+
+              <p className="text-red-500 text-sm font-medium">
+                {error}
+              </p>
+
+            )
+          }
+
           <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
             Register
           </button>
@@ -167,6 +232,7 @@ const Register = () => {
     </div>
 
   );
+
 };
 
 export default Register;
