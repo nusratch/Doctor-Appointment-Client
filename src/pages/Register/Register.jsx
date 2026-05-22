@@ -1,7 +1,70 @@
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
+
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+
+    e.preventDefault();
+
+    const form = e.target;
+
+    const name = form.name.value;
+
+    const email = form.email.value;
+
+    const photo = form.photo.value;
+
+    const password = form.password.value;
+
+    const userInfo = {
+      name,
+      email,
+      photo,
+      password,
+    };
+
+    try {
+
+      const res = await fetch(
+        "https://doctor-appointment-server-seven.vercel.app/register",
+        {
+          method: "POST",
+
+          headers: {
+            "content-type": "application/json",
+          },
+
+          body: JSON.stringify(userInfo),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.insertedId) {
+
+        toast.success("Registration Successful");
+
+        navigate("/login");
+
+      } else {
+
+        toast.error(data.message);
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+      toast.error("Registration Failed");
+
+    }
+
+  };
+
   return (
 
     <div className="min-h-screen flex items-center justify-center bg-[#eef9ff] px-4 py-10">
@@ -12,7 +75,10 @@ const Register = () => {
           Register
         </h2>
 
-        <form className="space-y-5">
+        <form
+          onSubmit={handleRegister}
+          className="space-y-5"
+        >
 
           <div>
 
@@ -22,8 +88,10 @@ const Register = () => {
 
             <input
               type="text"
+              name="name"
               placeholder="Enter your name"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+              required
             />
 
           </div>
@@ -36,8 +104,10 @@ const Register = () => {
 
             <input
               type="email"
+              name="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+              required
             />
 
           </div>
@@ -50,6 +120,7 @@ const Register = () => {
 
             <input
               type="text"
+              name="photo"
               placeholder="Enter your photo URL"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
             />
@@ -64,8 +135,10 @@ const Register = () => {
 
             <input
               type="password"
+              name="password"
               placeholder="Enter your password"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+              required
             />
 
           </div>
@@ -75,14 +148,6 @@ const Register = () => {
           </button>
 
         </form>
-
-        <div className="divider text-gray-400">
-          OR
-        </div>
-
-        <button className="btn btn-outline w-full border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl">
-          Continue with Google
-        </button>
 
         <p className="text-center mt-6 text-sm text-gray-600">
 

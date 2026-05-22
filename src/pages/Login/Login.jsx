@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import { authClient } from "../../lib/auth-client";
-
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const Login = () => {
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
 
@@ -13,20 +14,51 @@ const Login = () => {
 
     const password = form.password.value;
 
-    await authClient.signIn.email({
-
+    const userInfo = {
       email,
       password,
+    };
 
-    });
+    try {
 
-  };
+      const res = await fetch(
+        "https://doctor-appointment-server-seven.vercel.app/login",
+        {
+          method: "POST",
 
-  const handleGoogleLogin = async () => {
+          headers: {
+            "content-type": "application/json",
+          },
 
-    await authClient.signIn.social({
-      provider: "google",
-    });
+          body: JSON.stringify(userInfo),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.token) {
+
+        localStorage.setItem(
+          "access-token",
+          data.token
+        );
+
+        toast.success("Login Successful");
+
+        navigate("/");
+
+      } else {
+
+        toast.error(data.message);
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+      toast.error("Login Failed");
+
+    }
 
   };
 
@@ -56,6 +88,7 @@ const Login = () => {
               name="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+              required
             />
 
           </div>
@@ -71,15 +104,8 @@ const Login = () => {
               name="password"
               placeholder="Enter your password"
               className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+              required
             />
-
-          </div>
-
-          <div className="text-right">
-
-            <a className="text-sm text-sky-500 hover:underline cursor-pointer">
-              Forgot Password?
-            </a>
 
           </div>
 
@@ -88,17 +114,6 @@ const Login = () => {
           </button>
 
         </form>
-
-        <div className="divider text-gray-400">
-          OR
-        </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          className="btn btn-outline w-full border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl"
-        >
-          Continue with Google
-        </button>
 
         <p className="text-center mt-6 text-sm text-gray-600">
 
