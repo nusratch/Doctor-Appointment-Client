@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+} from "react-router-dom";
 
 import {
   useContext,
   useEffect,
   useState,
 } from "react";
+
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 import {
   AuthContext,
@@ -18,12 +23,6 @@ const Navbar = () => {
 
   const [loggedUser, setLoggedUser] =
     useState(null);
-
-  const [theme, setTheme] =
-    useState(
-      localStorage.getItem("theme") ||
-        "light"
-    );
 
   useEffect(() => {
 
@@ -39,32 +38,6 @@ const Navbar = () => {
     }
 
   }, []);
-
-  useEffect(() => {
-
-    document
-      .querySelector("html")
-      .setAttribute(
-        "data-theme",
-        theme
-      );
-
-    localStorage.setItem(
-      "theme",
-      theme
-    );
-
-  }, [theme]);
-
-  const toggleTheme = () => {
-
-    setTheme(
-      theme === "light"
-        ? "dark"
-        : "light"
-    );
-
-  };
 
   const handleLogout = () => {
 
@@ -86,31 +59,53 @@ const Navbar = () => {
 
   };
 
+  const navLinkClass = ({
+    isActive,
+  }) =>
+    isActive
+      ? "text-sky-500 font-bold"
+      : "text-gray-700 dark:text-gray-200 hover:text-sky-500 duration-200";
+
   const links = (
     <>
       <li>
-        <Link to="/">
+
+        <NavLink
+          to="/"
+          className={navLinkClass}
+        >
           Home
-        </Link>
+        </NavLink>
+
       </li>
 
       <li>
-        <Link to="/appointments">
+
+        <NavLink
+          to="/appointments"
+          className={navLinkClass}
+        >
           Appointments
-        </Link>
+        </NavLink>
+
       </li>
 
       <li>
-        <Link to="/dashboard/my-bookings">
+
+        <NavLink
+          to="/dashboard/my-bookings"
+          className={navLinkClass}
+        >
           Dashboard
-        </Link>
+        </NavLink>
+
       </li>
     </>
   );
 
   return (
 
-    <div className="navbar bg-white dark:bg-[#111827] shadow-md px-4 md:px-8 duration-300">
+    <div className="navbar bg-white dark:bg-[#0f172a] shadow-md px-4 md:px-8 duration-300">
 
       <div className="navbar-start">
 
@@ -119,14 +114,14 @@ const Navbar = () => {
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost text-2xl"
+            className="btn btn-ghost text-2xl text-black dark:text-white"
           >
             ☰
           </div>
 
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-white dark:bg-[#1f2937] rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-white dark:bg-[#1e293b] rounded-box w-52"
           >
             {links}
           </ul>
@@ -135,7 +130,7 @@ const Navbar = () => {
 
         <Link
           to="/"
-          className="text-2xl md:text-3xl font-bold text-sky-500"
+          className="text-2xl md:text-3xl font-bold text-sky-500 dark:text-white"
         >
           DocAppoint
         </Link>
@@ -152,16 +147,7 @@ const Navbar = () => {
 
       <div className="navbar-end gap-3">
 
-        <button
-          onClick={toggleTheme}
-          className="btn rounded-xl bg-slate-200 hover:bg-slate-300 border-none"
-        >
-          {
-            theme === "light"
-              ? "🌙"
-              : "☀️"
-          }
-        </button>
+        <ThemeToggle />
 
         {
           loggedUser ? (
@@ -169,9 +155,19 @@ const Navbar = () => {
 
               <Link
                 to="/dashboard/my-profile"
-                className="w-11 h-11 rounded-full border-2 border-sky-300 flex items-center justify-center text-2xl bg-white hover:bg-sky-50 duration-200"
+                className="w-11 h-11 rounded-full overflow-hidden border-2 border-sky-300"
               >
-                👤
+
+                <img
+                  src={
+                    loggedUser?.image ||
+                    loggedUser?.photo ||
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  }
+                  alt="User"
+                  className="w-full h-full object-cover"
+                />
+
               </Link>
 
               <button
