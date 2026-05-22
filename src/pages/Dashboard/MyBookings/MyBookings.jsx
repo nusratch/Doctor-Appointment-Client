@@ -48,7 +48,7 @@ const MyBookings = () => {
           const userBookings =
             res.data.filter(
               (booking) =>
-                booking.userEmail ===
+                booking.email ===
                 user?.email
             );
 
