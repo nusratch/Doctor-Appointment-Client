@@ -119,22 +119,8 @@ const Navbar = () => {
           loggedUser ? (
             <>
 
-              <div className="flex items-center gap-2">
-
-                <img
-                  src={
-                    loggedUser?.photo
-                      ? loggedUser.photo
-                      : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  }
-                  alt="User"
-                  className="w-11 h-11 rounded-full object-cover border-2 border-sky-300"
-                />
-
-                <p className="hidden md:block font-semibold text-sky-500">
-                  {loggedUser?.name}
-                </p>
-
+              <div className="w-11 h-11 rounded-full border-2 border-sky-300 flex items-center justify-center text-2xl bg-white">
+                👤
               </div>
 
               <button
