@@ -9,11 +9,11 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { toast } from "react-toastify";
-
 import {
   AuthContext,
 } from "../../providers/AuthProvider";
+
+import { toast } from "react-toastify";
 
 const BookAppointment = () => {
 
@@ -27,6 +27,9 @@ const BookAppointment = () => {
   const [doctor, setDoctor] =
     useState(null);
 
+  const [loading, setLoading] =
+    useState(true);
+
   useEffect(() => {
 
     fetch(
@@ -37,10 +40,14 @@ const BookAppointment = () => {
 
         setDoctor(data);
 
+        setLoading(false);
+
       })
       .catch((error) => {
 
         console.log(error);
+
+        setLoading(false);
 
       });
 
@@ -70,12 +77,11 @@ const BookAppointment = () => {
 
       const appointmentData = {
 
-        userEmail: user?.email,
+        userEmail:
+          user?.email,
 
-        doctorName: doctor?.name,
-
-        doctorImage:
-          doctor?.image,
+        doctorName:
+          doctor?.name,
 
         patientName,
 
@@ -87,7 +93,8 @@ const BookAppointment = () => {
 
         appointmentTime,
 
-        fee: doctor?.fee,
+        fee:
+          doctor?.fee,
 
       };
 
@@ -114,7 +121,9 @@ const BookAppointment = () => {
         const data =
           await res.json();
 
-        if (data.insertedId) {
+        if (
+          data.insertedId
+        ) {
 
           toast.success(
             "Appointment booked successfully!"
@@ -138,13 +147,27 @@ const BookAppointment = () => {
 
     };
 
-  if (!doctor) {
+  if (loading) {
 
     return (
 
       <div className="min-h-screen flex items-center justify-center">
 
         <span className="loading loading-spinner loading-lg text-info"></span>
+
+      </div>
+
+    );
+
+  }
+
+  if (!doctor) {
+
+    return (
+
+      <div className="min-h-screen flex items-center justify-center text-2xl font-bold text-red-500">
+
+        Doctor not found
 
       </div>
 
@@ -179,7 +202,9 @@ const BookAppointment = () => {
 
               <input
                 type="text"
-                value={doctor?.name}
+                value={
+                  doctor?.name
+                }
                 readOnly
                 className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-gray-100"
               />

@@ -15,9 +15,9 @@ const AllAppointments = () => {
 
   useEffect(() => {
 
-    fetch(
-      "https://doctor-appointment-server-seven.vercel.app/doctors"
-    )
+   fetch(
+  "https://doctor-appointment-server-seven.vercel.app/doctors"
+)
       .then((res) => res.json())
       .then((data) => {
 
