@@ -17,6 +17,9 @@ const AllAppointments = () => {
   const [searchText, setSearchText] =
     useState("");
 
+  const [sortOption, setSortOption] =
+    useState("");
+
   const [loading, setLoading] =
     useState(true);
 
@@ -45,7 +48,7 @@ const AllAppointments = () => {
 
   }, []);
 
-  const filteredDoctors =
+  let filteredDoctors =
     doctors.filter((doctor) =>
       doctor.name
         .toLowerCase()
@@ -53,6 +56,30 @@ const AllAppointments = () => {
           searchText.toLowerCase()
         )
     );
+
+  if (sortOption === "fee-low-high") {
+
+    filteredDoctors.sort(
+      (a, b) => a.fee - b.fee
+    );
+
+  }
+
+  if (sortOption === "fee-high-low") {
+
+    filteredDoctors.sort(
+      (a, b) => b.fee - a.fee
+    );
+
+  }
+
+  if (sortOption === "rating-high-low") {
+
+    filteredDoctors.sort(
+      (a, b) => b.rating - a.rating
+    );
+
+  }
 
   return (
 
@@ -87,7 +114,7 @@ const AllAppointments = () => {
 
           </div>
 
-          <div className="max-w-xl mx-auto mb-12">
+          <div className="flex flex-col md:flex-row gap-4 justify-center mb-12">
 
             <input
               type="text"
@@ -98,8 +125,40 @@ const AllAppointments = () => {
                   e.target.value
                 )
               }
-              className="w-full px-5 py-4 rounded-2xl border border-sky-200 focus:outline-none focus:border-sky-400"
+              className="w-full md:w-[400px] px-5 py-4 rounded-2xl border border-sky-200 focus:outline-none focus:border-sky-400"
             />
+
+            <button className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-2xl px-8">
+              Search
+            </button>
+
+            <select
+              value={sortOption}
+              onChange={(e) =>
+                setSortOption(
+                  e.target.value
+                )
+              }
+              className="px-5 py-4 rounded-2xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white"
+            >
+
+              <option value="">
+                Sort By
+              </option>
+
+              <option value="fee-low-high">
+                Fee: Low to High
+              </option>
+
+              <option value="fee-high-low">
+                Fee: High to Low
+              </option>
+
+              <option value="rating-high-low">
+                Rating: High to Low
+              </option>
+
+            </select>
 
           </div>
 

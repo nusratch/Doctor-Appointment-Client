@@ -188,6 +188,17 @@ const Login = () => {
 
             </div>
 
+            <div className="text-right">
+
+              <button
+                type="button"
+                className="text-sm text-sky-500 hover:underline"
+              >
+                Forgot Password?
+              </button>
+
+            </div>
+
             <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
               Login
             </button>

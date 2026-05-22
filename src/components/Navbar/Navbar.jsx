@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import {
   useContext,
   useEffect,
@@ -18,6 +19,12 @@ const Navbar = () => {
   const [loggedUser, setLoggedUser] =
     useState(null);
 
+  const [theme, setTheme] =
+    useState(
+      localStorage.getItem("theme") ||
+        "light"
+    );
+
   useEffect(() => {
 
     const storedUser =
@@ -33,6 +40,32 @@ const Navbar = () => {
 
   }, []);
 
+  useEffect(() => {
+
+    document
+      .querySelector("html")
+      .setAttribute(
+        "data-theme",
+        theme
+      );
+
+    localStorage.setItem(
+      "theme",
+      theme
+    );
+
+  }, [theme]);
+
+  const toggleTheme = () => {
+
+    setTheme(
+      theme === "light"
+        ? "dark"
+        : "light"
+    );
+
+  };
+
   const handleLogout = () => {
 
     localStorage.removeItem(
@@ -46,7 +79,9 @@ const Navbar = () => {
     setLoggedUser(null);
 
     if (logoutUser) {
+
       logoutUser();
+
     }
 
   };
@@ -54,7 +89,9 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <Link to="/">
+          Home
+        </Link>
       </li>
 
       <li>
@@ -73,7 +110,7 @@ const Navbar = () => {
 
   return (
 
-    <div className="navbar bg-white shadow-md px-4 md:px-8">
+    <div className="navbar bg-white dark:bg-[#111827] shadow-md px-4 md:px-8 duration-300">
 
       <div className="navbar-start">
 
@@ -89,7 +126,7 @@ const Navbar = () => {
 
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-white rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-white dark:bg-[#1f2937] rounded-box w-52"
           >
             {links}
           </ul>
@@ -114,6 +151,17 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end gap-3">
+
+        <button
+          onClick={toggleTheme}
+          className="btn rounded-xl bg-slate-200 hover:bg-slate-300 border-none"
+        >
+          {
+            theme === "light"
+              ? "🌙"
+              : "☀️"
+          }
+        </button>
 
         {
           loggedUser ? (
@@ -160,6 +208,7 @@ const Navbar = () => {
     </div>
 
   );
+
 };
 
 export default Navbar;

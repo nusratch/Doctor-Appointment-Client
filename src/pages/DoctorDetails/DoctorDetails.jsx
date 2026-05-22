@@ -12,6 +12,8 @@ import {
   Helmet,
 } from "react-helmet-async";
 
+import { toast } from "react-toastify";
+
 const DoctorDetails = () => {
 
   const { id } =
@@ -22,6 +24,9 @@ const DoctorDetails = () => {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [reviews, setReviews] =
+    useState([]);
 
   useEffect(() => {
 
@@ -47,6 +52,45 @@ const DoctorDetails = () => {
       });
 
   }, [id]);
+
+  const handleReview =
+    (e) => {
+
+      e.preventDefault();
+
+      const form = e.target;
+
+      const reviewer =
+        form.reviewer.value;
+
+      const comment =
+        form.comment.value;
+
+      const rating =
+        form.rating.value;
+
+      const newReview = {
+
+        reviewer,
+
+        comment,
+
+        rating,
+
+      };
+
+      setReviews([
+        newReview,
+        ...reviews,
+      ]);
+
+      toast.success(
+        "Review added successfully!"
+      );
+
+      form.reset();
+
+    };
 
   if (loading) {
 
@@ -93,11 +137,11 @@ const DoctorDetails = () => {
 
       </Helmet>
 
-      <div className="bg-[#f4fbff] py-12 md:py-20 min-h-screen">
+      <div className="bg-[#f4fbff] dark:bg-[#0f172a] py-12 md:py-20 min-h-screen duration-300">
 
         <div className="max-w-6xl mx-auto px-4 md:px-8">
 
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 md:p-10">
+          <div className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 md:p-10 duration-300">
 
             <div>
 
@@ -123,15 +167,15 @@ const DoctorDetails = () => {
 
               </div>
 
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-5">
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-800 dark:text-white mb-5">
                 {doctor.name}
               </h2>
 
-              <p className="text-gray-600 leading-8 mb-6 text-base md:text-lg">
+              <p className="text-gray-600 dark:text-gray-300 leading-8 mb-6 text-base md:text-lg">
                 Experienced specialist dedicated to providing trusted healthcare support and quality treatment for patients.
               </p>
 
-              <div className="space-y-3 text-gray-700 text-base md:text-lg">
+              <div className="space-y-3 text-gray-700 dark:text-gray-300 text-base md:text-lg">
 
                 <p>
                   <span className="font-bold">
@@ -172,6 +216,132 @@ const DoctorDetails = () => {
                 </button>
 
               </Link>
+
+            </div>
+
+          </div>
+
+          <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <div className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg p-6 md:p-8">
+
+              <h2 className="text-3xl font-bold text-sky-500 mb-8">
+                Add Review
+              </h2>
+
+              <form
+                onSubmit={
+                  handleReview
+                }
+                className="space-y-5"
+              >
+
+                <input
+                  type="text"
+                  name="reviewer"
+                  placeholder="Your Name"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                />
+
+                <select
+                  name="rating"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                >
+
+                  <option value="5">
+                    ⭐⭐⭐⭐⭐
+                  </option>
+
+                  <option value="4">
+                    ⭐⭐⭐⭐
+                  </option>
+
+                  <option value="3">
+                    ⭐⭐⭐
+                  </option>
+
+                </select>
+
+                <textarea
+                  name="comment"
+                  rows="4"
+                  placeholder="Write your review..."
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                ></textarea>
+
+                <button className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl w-full">
+                  Submit Review
+                </button>
+
+              </form>
+
+            </div>
+
+            <div className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg p-6 md:p-8">
+
+              <h2 className="text-3xl font-bold text-sky-500 mb-8">
+                Patient Reviews
+              </h2>
+
+              {
+                reviews.length === 0 ? (
+
+                  <p className="text-gray-500 dark:text-gray-300">
+                    No reviews added yet.
+                  </p>
+
+                ) : (
+
+                  <div className="space-y-5">
+
+                    {
+                      reviews.map(
+                        (
+                          review,
+                          index
+                        ) => (
+
+                          <div
+                            key={index}
+                            className="border border-sky-100 rounded-2xl p-5"
+                          >
+
+                            <div className="flex items-center justify-between mb-2">
+
+                              <h4 className="font-bold text-lg dark:text-white">
+                                {
+                                  review.reviewer
+                                }
+                              </h4>
+
+                              <span className="text-yellow-500">
+                                {
+                                  "⭐".repeat(
+                                    review.rating
+                                  )
+                                }
+                              </span>
+
+                            </div>
+
+                            <p className="text-gray-600 dark:text-gray-300 leading-7">
+                              {
+                                review.comment
+                              }
+                            </p>
+
+                          </div>
+
+                        )
+                      )
+                    }
+
+                  </div>
+
+                )
+              }
 
             </div>
 
