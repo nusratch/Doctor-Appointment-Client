@@ -119,14 +119,23 @@ const Navbar = () => {
           loggedUser ? (
             <>
 
-              <img
-                src={
-                  loggedUser.photo ||
-                  "https://i.ibb.co/4pDNDk1/avatar.png"
-                }
-                alt="User"
-                className="w-11 h-11 rounded-full object-cover border-2 border-sky-300"
-              />
+              <div className="flex items-center gap-2">
+
+                <img
+                  src={
+                    loggedUser?.photo
+                      ? loggedUser.photo
+                      : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  }
+                  alt="User"
+                  className="w-11 h-11 rounded-full object-cover border-2 border-sky-300"
+                />
+
+                <p className="hidden md:block font-semibold text-sky-500">
+                  {loggedUser?.name}
+                </p>
+
+              </div>
 
               <button
                 onClick={handleLogout}
