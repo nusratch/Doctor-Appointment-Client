@@ -27,7 +27,9 @@ const Navbar = () => {
   useEffect(() => {
 
     const storedUser =
-      localStorage.getItem("logged-user");
+      localStorage.getItem(
+        "logged-user"
+      );
 
     if (storedUser) {
 
@@ -130,7 +132,7 @@ const Navbar = () => {
 
         <Link
           to="/"
-          className="text-2xl md:text-3xl font-bold text-sky-500 dark:text-white"
+          className="text-2xl md:text-3xl font-bold text-sky-500"
         >
           DocAppoint
         </Link>
@@ -145,7 +147,7 @@ const Navbar = () => {
 
       </div>
 
-      <div className="navbar-end gap-3">
+      <div className="navbar-end flex items-center gap-2 md:gap-3">
 
         <ThemeToggle />
 
@@ -155,24 +157,14 @@ const Navbar = () => {
 
               <Link
                 to="/dashboard/my-profile"
-                className="w-11 h-11 rounded-full overflow-hidden border-2 border-sky-300"
+                className="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-sky-300 flex items-center justify-center text-xl bg-white dark:bg-[#1e293b] dark:text-white flex-shrink-0"
               >
-
-                <img
-                  src={
-                    loggedUser?.image ||
-                    loggedUser?.photo ||
-                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  }
-                  alt="User"
-                  className="w-full h-full object-cover"
-                />
-
+                👤
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+                className="btn btn-sm md:btn-md bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl px-3 md:px-5"
               >
                 Logout
               </button>
@@ -183,14 +175,14 @@ const Navbar = () => {
 
               <Link
                 to="/login"
-                className="btn border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl"
+                className="btn btn-sm md:btn-md border-sky-300 text-sky-500 hover:bg-sky-500 hover:text-white rounded-xl px-3 md:px-5"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
+                className="btn btn-sm md:btn-md bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl px-3 md:px-5"
               >
                 Register
               </Link>
