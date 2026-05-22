@@ -10,6 +10,10 @@ import {
 } from "react-router-dom";
 
 import {
+  Helmet,
+} from "react-helmet-async";
+
+import {
   AuthContext,
 } from "../../providers/AuthProvider";
 
@@ -36,6 +40,7 @@ const BookAppointment = () => {
       `https://doctor-appointment-server-seven.vercel.app/doctors/${id}`
     )
       .then((res) => res.json())
+
       .then((data) => {
 
         setDoctor(data);
@@ -43,6 +48,7 @@ const BookAppointment = () => {
         setLoading(false);
 
       })
+
       .catch((error) => {
 
         console.log(error);
@@ -177,138 +183,156 @@ const BookAppointment = () => {
 
   return (
 
-    <div className="bg-[#f4fbff] min-h-screen py-12">
+    <>
 
-      <div className="max-w-3xl mx-auto px-4">
+      <Helmet>
 
-        <div className="bg-white rounded-3xl shadow-lg p-6 md:p-10">
+        <title>
+          Book Appointment | DocAppoint
+        </title>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#3BA5F3] mb-10">
-            Book Appointment
-          </h2>
+        <meta
+          name="description"
+          content="Book doctor appointments easily and securely with DocAppoint."
+        />
 
-          <form
-            onSubmit={
-              handleBookAppointment
-            }
-            className="space-y-5"
-          >
+      </Helmet>
 
-            <div>
+      <div className="bg-[#f4fbff] min-h-screen py-12">
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Doctor Name
-              </label>
+        <div className="max-w-3xl mx-auto px-4">
 
-              <input
-                type="text"
-                value={
-                  doctor?.name
-                }
-                readOnly
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-gray-100"
-              />
+          <div className="bg-white rounded-3xl shadow-lg p-6 md:p-10">
 
-            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-[#3BA5F3] mb-10">
+              Book Appointment
+            </h2>
 
-            <div>
+            <form
+              onSubmit={
+                handleBookAppointment
+              }
+              className="space-y-5"
+            >
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Patient Name
-              </label>
+              <div>
 
-              <input
-                type="text"
-                name="patientName"
-                placeholder="Enter patient name"
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
-                required
-              />
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Doctor Name
+                </label>
 
-            </div>
+                <input
+                  type="text"
+                  value={
+                    doctor?.name
+                  }
+                  readOnly
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 bg-gray-100"
+                />
 
-            <div>
+              </div>
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Gender
-              </label>
+              <div>
 
-              <select
-                name="gender"
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
-              >
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Patient Name
+                </label>
 
-                <option value="Male">
-                  Male
-                </option>
+                <input
+                  type="text"
+                  name="patientName"
+                  placeholder="Enter patient name"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                />
 
-                <option value="Female">
-                  Female
-                </option>
+              </div>
 
-              </select>
+              <div>
 
-            </div>
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Gender
+                </label>
 
-            <div>
+                <select
+                  name="gender"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                >
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Phone Number
-              </label>
+                  <option value="Male">
+                    Male
+                  </option>
 
-              <input
-                type="text"
-                name="phone"
-                placeholder="Enter phone number"
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
-                required
-              />
+                  <option value="Female">
+                    Female
+                  </option>
 
-            </div>
+                </select>
 
-            <div>
+              </div>
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Appointment Date
-              </label>
+              <div>
 
-              <input
-                type="date"
-                name="appointmentDate"
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
-                required
-              />
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Phone Number
+                </label>
 
-            </div>
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Enter phone number"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                />
 
-            <div>
+              </div>
 
-              <label className="block mb-2 font-semibold text-gray-700">
-                Appointment Time
-              </label>
+              <div>
 
-              <input
-                type="time"
-                name="appointmentTime"
-                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
-                required
-              />
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Appointment Date
+                </label>
 
-            </div>
+                <input
+                  type="date"
+                  name="appointmentDate"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                />
 
-            <button className="btn w-full bg-[#3BA5F3] hover:bg-[#2593e8] border-none text-white rounded-xl">
-              Confirm Appointment
-            </button>
+              </div>
 
-          </form>
+              <div>
+
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Appointment Time
+                </label>
+
+                <input
+                  type="time"
+                  name="appointmentTime"
+                  className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400"
+                  required
+                />
+
+              </div>
+
+              <button className="btn w-full bg-[#3BA5F3] hover:bg-[#2593e8] border-none text-white rounded-xl">
+                Confirm Appointment
+              </button>
+
+            </form>
+
+          </div>
 
         </div>
 
       </div>
 
-    </div>
+    </>
 
   );
+
 };
 
 export default BookAppointment;

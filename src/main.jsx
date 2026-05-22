@@ -1,11 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 
 import {
   RouterProvider,
 } from "react-router-dom";
+
+import {
+  HelmetProvider,
+} from "react-helmet-async";
+
+import {
+  ToastContainer,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 
@@ -13,15 +21,25 @@ import router from "./routes/router";
 
 import AuthProvider from "./providers/AuthProvider";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(
+  document.getElementById("root")
+).render(
 
   <React.StrictMode>
 
-    <AuthProvider>
+    <HelmetProvider>
 
-      <RouterProvider router={router} />
-<ToastContainer />
-    </AuthProvider>
+      <AuthProvider>
+
+        <RouterProvider
+          router={router}
+        />
+
+        <ToastContainer />
+
+      </AuthProvider>
+
+    </HelmetProvider>
 
   </React.StrictMode>
 

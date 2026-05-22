@@ -4,6 +4,10 @@ import {
   useState,
 } from "react";
 
+import {
+  Helmet,
+} from "react-helmet-async";
+
 import Modal from "react-modal";
 
 import axiosPublic from "../../../services/axiosPublic";
@@ -39,6 +43,7 @@ const MyBookings = () => {
         .get(
           `/appointments?email=${user.email}`
         )
+
         .then((res) => {
 
           setBookings(res.data);
@@ -46,6 +51,7 @@ const MyBookings = () => {
           setLoading(false);
 
         })
+
         .catch((error) => {
 
           console.log(error);
@@ -199,201 +205,218 @@ const MyBookings = () => {
 
   return (
 
-    <div className="bg-[#f4fbff] min-h-screen py-12 px-4">
+    <>
 
-      <div className="max-w-6xl mx-auto">
+      <Helmet>
 
-        <h2 className="text-3xl md:text-5xl font-bold text-center text-[#3BA5F3] mb-12">
-          My Bookings
-        </h2>
+        <title>
+          My Bookings | DocAppoint
+        </title>
 
-        {
-          bookings.length === 0 ? (
+        <meta
+          name="description"
+          content="Manage your booked doctor appointments easily with DocAppoint."
+        />
 
-            <div className="bg-white rounded-3xl shadow-lg p-10 text-center">
+      </Helmet>
 
-              <h3 className="text-2xl font-bold text-gray-700 mb-3">
-                No appointments booked yet
-              </h3>
+      <div className="bg-[#f4fbff] min-h-screen py-12 px-4">
 
-              <p className="text-gray-500">
-                Please book an appointment first.
-              </p>
+        <div className="max-w-6xl mx-auto">
 
-            </div>
-
-          ) : (
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-              {
-                bookings.map((booking) => (
-
-                  <div
-                    key={booking._id}
-                    className="bg-white rounded-3xl shadow-lg p-6"
-                  >
-
-                    <div className="space-y-3">
-
-                      <h3 className="text-2xl font-bold text-[#3BA5F3]">
-                        {booking.doctorName}
-                      </h3>
-
-                      <p>
-                        <span className="font-semibold">
-                          Patient:
-                        </span>{" "}
-                        {booking.patientName}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold">
-                          Gender:
-                        </span>{" "}
-                        {booking.gender}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold">
-                          Phone:
-                        </span>{" "}
-                        {booking.phone}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold">
-                          Date:
-                        </span>{" "}
-                        {booking.appointmentDate}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold">
-                          Time:
-                        </span>{" "}
-                        {booking.appointmentTime}
-                      </p>
-
-                    </div>
-
-                    <div className="flex gap-4 mt-8">
-
-                      <button
-                        onClick={() =>
-                          openModal(booking)
-                        }
-                        className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white"
-                      >
-                        Update
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            booking._id
-                          )
-                        }
-                        className="btn flex-1 bg-red-500 hover:bg-red-600 border-none text-white"
-                      >
-                        Delete
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                ))
-              }
-
-            </div>
-
-          )
-        }
-
-        <Modal
-          isOpen={isOpen}
-          onRequestClose={() =>
-            setIsOpen(false)
-          }
-          className="max-w-2xl mx-auto mt-20 bg-white rounded-3xl p-8 outline-none"
-          overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50"
-        >
-
-          <h2 className="text-3xl font-bold text-center text-sky-500 mb-8">
-            Update Appointment
+          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#3BA5F3] mb-12">
+            My Bookings
           </h2>
 
-          <form
-            onSubmit={handleUpdate}
-            className="space-y-5"
+          {
+            bookings.length === 0 ? (
+
+              <div className="bg-white rounded-3xl shadow-lg p-10 text-center">
+
+                <h3 className="text-2xl font-bold text-gray-700 mb-3">
+                  No appointments booked yet
+                </h3>
+
+                <p className="text-gray-500">
+                  Please book an appointment first.
+                </p>
+
+              </div>
+
+            ) : (
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                {
+                  bookings.map((booking) => (
+
+                    <div
+                      key={booking._id}
+                      className="bg-white rounded-3xl shadow-lg p-6"
+                    >
+
+                      <div className="space-y-3">
+
+                        <h3 className="text-2xl font-bold text-[#3BA5F3]">
+                          {booking.doctorName}
+                        </h3>
+
+                        <p>
+                          <span className="font-semibold">
+                            Patient:
+                          </span>{" "}
+                          {booking.patientName}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold">
+                            Gender:
+                          </span>{" "}
+                          {booking.gender}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold">
+                            Phone:
+                          </span>{" "}
+                          {booking.phone}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold">
+                            Date:
+                          </span>{" "}
+                          {booking.appointmentDate}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold">
+                            Time:
+                          </span>{" "}
+                          {booking.appointmentTime}
+                        </p>
+
+                      </div>
+
+                      <div className="flex gap-4 mt-8">
+
+                        <button
+                          onClick={() =>
+                            openModal(booking)
+                          }
+                          className="btn flex-1 bg-sky-500 hover:bg-sky-600 border-none text-white"
+                        >
+                          Update
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleDelete(
+                              booking._id
+                            )
+                          }
+                          className="btn flex-1 bg-red-500 hover:bg-red-600 border-none text-white"
+                        >
+                          Delete
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  ))
+                }
+
+              </div>
+
+            )
+          }
+
+          <Modal
+            isOpen={isOpen}
+            onRequestClose={() =>
+              setIsOpen(false)
+            }
+            className="max-w-2xl mx-auto mt-20 bg-white rounded-3xl p-8 outline-none"
+            overlayClassName="fixed inset-0 bg-black/40 flex justify-center items-start px-4 z-50"
           >
 
-            <input
-              type="text"
-              name="patientName"
-              defaultValue={
-                selectedBooking?.patientName
-              }
-              className="w-full px-4 py-3 rounded-xl border border-sky-200"
-            />
+            <h2 className="text-3xl font-bold text-center text-sky-500 mb-8">
+              Update Appointment
+            </h2>
 
-            <select
-              name="gender"
-              defaultValue={
-                selectedBooking?.gender
-              }
-              className="w-full px-4 py-3 rounded-xl border border-sky-200"
+            <form
+              onSubmit={handleUpdate}
+              className="space-y-5"
             >
 
-              <option value="Male">
-                Male
-              </option>
+              <input
+                type="text"
+                name="patientName"
+                defaultValue={
+                  selectedBooking?.patientName
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              />
 
-              <option value="Female">
-                Female
-              </option>
+              <select
+                name="gender"
+                defaultValue={
+                  selectedBooking?.gender
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              >
 
-            </select>
+                <option value="Male">
+                  Male
+                </option>
 
-            <input
-              type="text"
-              name="phone"
-              defaultValue={
-                selectedBooking?.phone
-              }
-              className="w-full px-4 py-3 rounded-xl border border-sky-200"
-            />
+                <option value="Female">
+                  Female
+                </option>
 
-            <input
-              type="date"
-              name="appointmentDate"
-              defaultValue={
-                selectedBooking?.appointmentDate
-              }
-              className="w-full px-4 py-3 rounded-xl border border-sky-200"
-            />
+              </select>
 
-            <input
-              type="time"
-              name="appointmentTime"
-              defaultValue={
-                selectedBooking?.appointmentTime
-              }
-              className="w-full px-4 py-3 rounded-xl border border-sky-200"
-            />
+              <input
+                type="text"
+                name="phone"
+                defaultValue={
+                  selectedBooking?.phone
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              />
 
-            <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white">
-              Save Changes
-            </button>
+              <input
+                type="date"
+                name="appointmentDate"
+                defaultValue={
+                  selectedBooking?.appointmentDate
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              />
 
-          </form>
+              <input
+                type="time"
+                name="appointmentTime"
+                defaultValue={
+                  selectedBooking?.appointmentTime
+                }
+                className="w-full px-4 py-3 rounded-xl border border-sky-200"
+              />
 
-        </Modal>
+              <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white">
+                Save Changes
+              </button>
+
+            </form>
+
+          </Modal>
+
+        </div>
 
       </div>
 
-    </div>
+    </>
 
   );
 

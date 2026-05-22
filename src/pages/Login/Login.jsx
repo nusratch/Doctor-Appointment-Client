@@ -3,6 +3,10 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import {
+  Helmet,
+} from "react-helmet-async";
+
 import { toast } from "react-toastify";
 
 import { authClient } from "../../lib/auth-client";
@@ -122,88 +126,105 @@ const Login = () => {
 
   return (
 
-    <div className="min-h-screen flex items-center justify-center bg-[#eef9ff] px-4 py-10">
+    <>
 
-      <div className="w-full max-w-md bg-white border border-blue-100 shadow-xl rounded-3xl p-6 sm:p-8">
+      <Helmet>
 
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-sky-500 mb-8">
-          Login
-        </h2>
+        <title>
+          Login | DocAppoint
+        </title>
 
-        <form
-          onSubmit={
-            handleLogin
-          }
-          className="space-y-5"
-        >
+        <meta
+          name="description"
+          content="Login to DocAppoint to manage appointments and connect with trusted doctors."
+        />
 
-          <div>
+      </Helmet>
 
-            <label className="block mb-2 text-sm font-semibold text-gray-700">
-              Email
-            </label>
+      <div className="min-h-screen flex items-center justify-center bg-[#eef9ff] px-4 py-10">
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
-              required
-            />
+        <div className="w-full max-w-md bg-white border border-blue-100 shadow-xl rounded-3xl p-6 sm:p-8">
 
-          </div>
-
-          <div>
-
-            <label className="block mb-2 text-sm font-semibold text-gray-700">
-              Password
-            </label>
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
-              required
-            />
-
-          </div>
-
-          <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-sky-500 mb-8">
             Login
+          </h2>
+
+          <form
+            onSubmit={
+              handleLogin
+            }
+            className="space-y-5"
+          >
+
+            <div>
+
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
+                Email
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+                required
+              />
+
+            </div>
+
+            <div>
+
+              <label className="block mb-2 text-sm font-semibold text-gray-700">
+                Password
+              </label>
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:border-sky-400 bg-white text-gray-700"
+                required
+              />
+
+            </div>
+
+            <button className="btn w-full bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl">
+              Login
+            </button>
+
+          </form>
+
+          <div className="divider text-gray-400">
+            OR
+          </div>
+
+          <button
+            onClick={
+              handleGoogleLogin
+            }
+            className="btn w-full bg-white hover:bg-gray-100 text-black border border-gray-300 rounded-xl"
+          >
+            Continue with Google
           </button>
 
-        </form>
+          <p className="text-center mt-6 text-sm text-gray-600">
 
-        <div className="divider text-gray-400">
-          OR
+            Don’t have an account?
+
+            <Link
+              to="/register"
+              className="text-sky-500 font-semibold ml-1 hover:underline"
+            >
+              Register
+            </Link>
+
+          </p>
+
         </div>
-
-        <button
-          onClick={
-            handleGoogleLogin
-          }
-          className="btn w-full bg-white hover:bg-gray-100 text-black border border-gray-300 rounded-xl"
-        >
-          Continue with Google
-        </button>
-
-        <p className="text-center mt-6 text-sm text-gray-600">
-
-          Don’t have an account?
-
-          <Link
-            to="/register"
-            className="text-sky-500 font-semibold ml-1 hover:underline"
-          >
-            Register
-          </Link>
-
-        </p>
 
       </div>
 
-    </div>
+    </>
 
   );
 
