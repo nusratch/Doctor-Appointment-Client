@@ -43,6 +43,11 @@ const Login = () => {
           data.token
         );
 
+        localStorage.setItem(
+  "logged-user",
+  JSON.stringify(data.user)
+);
+
         toast.success("Login Successful");
 
         navigate("/");

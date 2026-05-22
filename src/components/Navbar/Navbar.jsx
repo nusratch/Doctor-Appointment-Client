@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import {
   useContext,
+  useEffect,
+  useState,
 } from "react";
 
 import {
@@ -10,9 +12,44 @@ import {
 const Navbar = () => {
 
   const {
-    user,
     logoutUser,
   } = useContext(AuthContext);
+
+  const [loggedUser, setLoggedUser] =
+    useState(null);
+
+  useEffect(() => {
+
+    const storedUser =
+      localStorage.getItem("logged-user");
+
+    if (storedUser) {
+
+      setLoggedUser(
+        JSON.parse(storedUser)
+      );
+
+    }
+
+  }, []);
+
+  const handleLogout = () => {
+
+    localStorage.removeItem(
+      "access-token"
+    );
+
+    localStorage.removeItem(
+      "logged-user"
+    );
+
+    setLoggedUser(null);
+
+    if (logoutUser) {
+      logoutUser();
+    }
+
+  };
 
   const links = (
     <>
@@ -79,17 +116,20 @@ const Navbar = () => {
       <div className="navbar-end gap-3">
 
         {
-          user ? (
+          loggedUser ? (
             <>
 
               <img
-                src={user.image || user.photoURL}
+                src={
+                  loggedUser.photo ||
+                  "https://i.ibb.co/4pDNDk1/avatar.png"
+                }
                 alt="User"
                 className="w-11 h-11 rounded-full object-cover border-2 border-sky-300"
               />
 
               <button
-                onClick={logoutUser}
+                onClick={handleLogout}
                 className="btn bg-sky-500 hover:bg-sky-600 border-none text-white rounded-xl"
               >
                 Logout

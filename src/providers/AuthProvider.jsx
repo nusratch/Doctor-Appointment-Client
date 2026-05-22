@@ -4,38 +4,60 @@ import {
   useState,
 } from "react";
 
-import { authClient } from "../lib/auth-client";
+export const AuthContext =
+  createContext(null);
 
-export const AuthContext = createContext(null);
+const AuthProvider = ({
+  children,
+}) => {
 
-const AuthProvider = ({ children }) => {
+  const [user, setUser] =
+    useState(null);
 
-  const [user, setUser] = useState(null);
-
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
 
-    authClient.getSession()
-      .then((data) => {
+    const storedUser =
+      localStorage.getItem(
+        "logged-user"
+      );
 
-        setUser(data?.data?.user || null);
+    if (storedUser) {
 
-        setLoading(false);
+      setUser(
+        JSON.parse(storedUser)
+      );
 
-      });
+    }
+
+    setLoading(false);
 
   }, []);
 
-  const loginUser = (userData) => {
+  const loginUser = (
+    userData
+  ) => {
 
     setUser(userData);
 
+    localStorage.setItem(
+      "logged-user",
+      JSON.stringify(userData)
+    );
+
   };
 
-  const logoutUser = async () => {
+  const logoutUser = () => {
 
-    await authClient.signOut();
+    localStorage.removeItem(
+      "logged-user"
+    );
+
+    localStorage.removeItem(
+      "access-token"
+    );
 
     setUser(null);
 
@@ -50,10 +72,17 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>
+
+    <AuthContext.Provider
+      value={authInfo}
+    >
+
       {children}
+
     </AuthContext.Provider>
+
   );
+
 };
 
 export default AuthProvider;

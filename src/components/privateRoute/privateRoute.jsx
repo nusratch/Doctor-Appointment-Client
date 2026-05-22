@@ -1,41 +1,39 @@
 import {
-  useContext,
-} from "react";
-
-import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-
-import {
-  AuthContext,
-} from "../../providers/AuthProvider";
 
 import LoadingSpinner from "../Loadingspinner/Loadingspinner";
 
 const PrivateRoute = ({ children }) => {
 
-  const {
-    user,
-    loading,
-  } = useContext(AuthContext);
-
   const location = useLocation();
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  const token =
+    localStorage.getItem("access-token");
 
-  if (user) {
+  const user =
+    localStorage.getItem("logged-user");
+
+  if (token && user) {
+
     return children;
+
   }
 
-  return (
-    <Navigate
-      state={location.pathname}
-      to="/login"
-    />
-  );
+  if (!token) {
+
+    return (
+      <Navigate
+        to="/login"
+        state={location.pathname}
+      />
+    );
+
+  }
+
+  return <LoadingSpinner />;
+
 };
 
 export default PrivateRoute;
