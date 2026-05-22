@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import DoctorCard from "../DoctorCard/DoctorCard";
 
 const TopDoctors = () => {
@@ -8,11 +7,13 @@ const TopDoctors = () => {
 
   useEffect(() => {
 
-    fetch(
-      "https://doctor-appointment-server-5b3q9lnuy-nusrats-projects-299df817.vercel.app/doctors"
-    )
+    fetch("https://doctor-appointment-server-era2ha38a-nusrats-projects-299df817.vercel.app/doctors")
       .then((res) => res.json())
-      .then((data) => setDoctors(data));
+      .then((data) => {
+        console.log(data);
+        setDoctors(data);
+      })
+      .catch((error) => console.log(error));
 
   }, []);
 
@@ -37,9 +38,9 @@ const TopDoctors = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
           {
-            doctors.map((doctor) => (
+            doctors?.map((doctor) => (
               <DoctorCard
-                key={doctor.id}
+                key={doctor._id}
                 doctor={doctor}
               />
             ))
