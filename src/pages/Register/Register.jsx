@@ -164,7 +164,7 @@ const Register = () => {
             "google",
 
           callbackURL:
-          window.location.origin
+            "https://doctor-appointment-client-psi.vercel.app/",
 
         });
 

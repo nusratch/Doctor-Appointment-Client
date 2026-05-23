@@ -108,7 +108,7 @@ const Login = () => {
             "google",
 
           callbackURL:
-            "https://doctor-appointment-client-psi.vercel.app",
+            "https://doctor-appointment-client-psi.vercel.app/",
 
         });
 
