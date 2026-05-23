@@ -4,6 +4,8 @@ import {
   useState,
 } from "react";
 
+import { authClient } from "../services/auth-client";
+
 export const AuthContext =
   createContext(null);
 
@@ -19,20 +21,66 @@ const AuthProvider = ({
 
   useEffect(() => {
 
-    const storedUser =
-      localStorage.getItem(
-        "logged-user"
-      );
+    const checkSession =
+      async () => {
 
-    if (storedUser) {
+        try {
 
-      setUser(
-        JSON.parse(storedUser)
-      );
+          const session =
+            await authClient.getSession();
 
-    }
+          if (
+            session?.data?.user
+          ) {
 
-    setLoading(false);
+            const loggedUser =
+              session.data.user;
+
+            setUser(
+              loggedUser
+            );
+
+            localStorage.setItem(
+              "logged-user",
+              JSON.stringify(
+                loggedUser
+              )
+            );
+
+          } else {
+
+            const storedUser =
+              localStorage.getItem(
+                "logged-user"
+              );
+
+            if (
+              storedUser
+            ) {
+
+              setUser(
+                JSON.parse(
+                  storedUser
+                )
+              );
+
+            }
+
+          }
+
+        } catch (error) {
+
+          console.log(error);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      };
+
+    checkSession();
 
   }, []);
 
@@ -49,19 +97,30 @@ const AuthProvider = ({
 
   };
 
-  const logoutUser = () => {
+  const logoutUser =
+    async () => {
 
-    localStorage.removeItem(
-      "logged-user"
-    );
+      try {
 
-    localStorage.removeItem(
-      "access-token"
-    );
+        await authClient.signOut();
 
-    setUser(null);
+      } catch (error) {
 
-  };
+        console.log(error);
+
+      }
+
+      localStorage.removeItem(
+        "logged-user"
+      );
+
+      localStorage.removeItem(
+        "access-token"
+      );
+
+      setUser(null);
+
+    };
 
   const authInfo = {
     user,

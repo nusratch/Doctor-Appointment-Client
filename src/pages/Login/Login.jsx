@@ -108,7 +108,7 @@ const Login = () => {
             "google",
 
           callbackURL:
-            "/",
+          window.location.origin
 
         });
 
