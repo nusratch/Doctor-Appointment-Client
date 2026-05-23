@@ -4,12 +4,6 @@ export const authClient =
   createAuthClient({
 
     baseURL:
-      "https://doctor-appointment-server-seven.vercel.app",
-
-    fetchOptions: {
-
-      credentials: "include",
-
-    },
+      "https://doctor-appointment-server-seven.vercel.app/api/auth",
 
   });
