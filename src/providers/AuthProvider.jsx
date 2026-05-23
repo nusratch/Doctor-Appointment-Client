@@ -4,7 +4,7 @@ import {
   useState,
 } from "react";
 
-import { authClient } from "../services/auth-client";
+import { authClient } from "../lib/auth-client";
 
 export const AuthContext =
   createContext(null);
