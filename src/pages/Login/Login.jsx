@@ -109,9 +109,7 @@ const Login = () => {
           callbackURL:
             "https://doctor-appointment-client-psi.vercel.app/",
 
-          redirectTo:
-            "https://doctor-appointment-client-psi.vercel.app/",
-
+  
         });
 
       } catch (error) {
