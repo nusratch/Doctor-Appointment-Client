@@ -164,7 +164,10 @@ const Register = () => {
             "google",
 
           callbackURL:
-            "https://doctor-appointment-client-psi.vercel.app/",
+            "https://doctor-appointment-client-psi.vercel.app",
+
+          newUserCallbackURL:
+            "https://doctor-appointment-client-psi.vercel.app",
 
         });
 
