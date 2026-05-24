@@ -160,14 +160,13 @@ const Register = () => {
 
         await authClient.signIn.social({
 
-          provider:
-            "google",
+          provider: "google",
 
           callbackURL:
-            "https://doctor-appointment-client-psi.vercel.app",
+            "https://doctor-appointment-server-seven.vercel.app/api/auth/callback/google",
 
-          newUserCallbackURL:
-            "https://doctor-appointment-client-psi.vercel.app",
+          redirectTo:
+            "https://doctor-appointment-client-psi.vercel.app/",
 
         });
 
