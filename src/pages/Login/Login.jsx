@@ -104,10 +104,12 @@ const Login = () => {
 
         await authClient.signIn.social({
 
-          provider:
-            "google",
+          provider: "google",
 
           callbackURL:
+            "https://doctor-appointment-client-psi.vercel.app/",
+
+          redirectTo:
             "https://doctor-appointment-client-psi.vercel.app/",
 
         });
